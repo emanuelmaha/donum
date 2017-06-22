@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions, Response, URLSearchParams} from '@angular/http';
+import { Http, Headers, RequestOptions, Response, URLSearchParams } from '@angular/http';
 
 import { User } from '../_models/index';
 
@@ -12,7 +12,7 @@ export class UserService {
     }
 
     getById(id: number) {
-        let requestOpt = this.jwt({'id': id}); 
+        let requestOpt = this.jwt({ 'id': id });
         console.log(requestOpt);
         return this.http.get('/api/user/getUser', requestOpt).map((response: Response) => response.json());
     }
@@ -37,9 +37,9 @@ export class UserService {
 
         if (currentUser && currentUser.token) {
             let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-           
+
             return new RequestOptions({
-                headers: headers 
+                headers: headers
             });
         }
     }
