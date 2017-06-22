@@ -2,21 +2,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-// used to create fake backend
-import { fakeBackendProvider } from './_helpers/index';
+// used to create backend
+import { BackendProvider } from './_helpers/index';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { BaseRequestOptions } from '@angular/http';
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './views/login/login.component';
-
-import { routing }        from './app.routing';
-
+// map of directives and guards
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
+
+// routing 
+import { routing }        from './app.routing';
+// services 
 import { AlertService, AuthenticationService, UserService } from './_services/index';
+// used for geting view of the app
+import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/index';
 import { RegisterComponent } from './views/register/index';
+import { LoginComponent } from './views/login/login.component';
 
 @NgModule({
     imports: [
@@ -39,7 +42,7 @@ import { RegisterComponent } from './views/register/index';
         UserService,
 
         // providers used to create fake backend
-        fakeBackendProvider,
+        BackendProvider,
         MockBackend,
         BaseRequestOptions
     ],
