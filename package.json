@@ -5,7 +5,8 @@
   "angular-cli": {},
   "scripts": {
     "build-electron": "ng build --base-href . && cp src/electron/* dist",
-    "start": "npm run build-electron && electron dist",
+    "server": "pouchdb-server --host 0.0.0.0 -p 10102 -m -d /tmp/pouchdb-server/ -n true",
+    "start": "npm run build-electron && electron dist && server",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -23,6 +24,10 @@
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "pouchdb-adapter-http": "^6.2.0",
+    "pouchdb-adapter-websql": "^6.2.0",
+    "pouchdb-replication": "^6.2.0",
+    "pouchdb-server": "^2.3.7",
     "rxdb": "^4.1.0",
     "rxjs": "^5.4.1",
     "systemjs": "^0.20.13",

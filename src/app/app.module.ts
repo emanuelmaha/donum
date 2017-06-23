@@ -10,6 +10,9 @@ import { BaseRequestOptions } from '@angular/http';
 // map of directives and guards
 import { AlertComponent } from './_directives/index';
 import { AuthGuard } from './_guards/index';
+// database services
+import { DatabaseService } from './db/services/database.service';
+
 
 // routing 
 import { routing }        from './app.routing';
@@ -36,6 +39,7 @@ import { LoginComponent } from './views/login/login.component';
         RegisterComponent
     ],
     providers: [
+        DatabaseService,
         AuthGuard,
         AlertService,
         AuthenticationService,
