@@ -1,0 +1,63 @@
+﻿<div layout="column" style="height:500px;" ng-cloak>
+
+    <md-sidenav-container class="demo-sidenav-container">
+        <md-sidenav #start (open)="myinput.focus()" mode="side">
+            <a class="nav-link" routerLink="/member">Member</a>
+            <a class="nav-link" routerLink="/dontaion">Donation</a>
+            <a class="nav-link" routerLink="/reports">Reports</a>
+            <p><a [routerLink]="['/logout']">Logout</a></p>
+        </md-sidenav>
+        <div class="example-sidenav-content">
+            <button type="button" md-button (click)="sidenav.open()">
+          Open sidenav
+          </button>
+        </div>
+    </md-sidenav-container>
+
+
+
+    <section layout="row" flex>
+
+        <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" md-whiteframe="4">
+
+            <md-toolbar class="md-theme-indigo">
+                <h1 class="md-toolbar-tools">Hi {{currentUser.firstName}}</h1>
+            </md-toolbar>
+            <md-content layout-padding ng-controller="LeftCtrl">
+                <div class="nav">
+                    <a class="nav-link" routerLink="/member">Member</a>
+                    <a class="nav-link" routerLink="/dontaion">Donation</a>
+                    <a class="nav-link" routerLink="/reports">Reports</a>
+                    <p><a [routerLink]="['/logout']">Logout</a></p>
+                </div>
+                ] </md-content>
+
+        </md-sidenav>
+
+        <md-content flex layout-padding>
+
+            <div layout="column" layout-align="top center">
+                <router-outlet></router-outlet>
+            </div>
+        </md-content>
+    </section>
+</div>
+<!--
+<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+    <div class="container">
+        <a class="navbar-brand">Hi {{currentUser.firstName}}</a>
+        <ul class="nav navbar-nav">
+            <li class="nav-item"><a class="nav-link" routerLink="/member">Member</a>
+                <ul class="dropdown-menu multi-level">
+                    <li>
+                        <a class="nav-link" routerLink="/member/add">Add</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item"><a class="nav-link" routerLink="/donation">Donation</a></li>
+            <li class="nav-item"><a class="nav-link" routerLink="/reports"> Reports </a></li>
+        </ul>
+        <!--routerLinkActive="active" add this to link 
+    </div>
+</nav>-->

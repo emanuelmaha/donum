@@ -5,17 +5,27 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
+      "dom",
+      "es2015",
       "es2016",
-      "dom"
+      "es5",
+      "es6"
     ],
     "mapRoot": "./",
     "module": "es2015",
     "moduleResolution": "node",
     "outDir": "../dist/out-tsc",
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "typeRoots": [
       "../node_modules/@types"
     ]
-  }
+  },
+  "exclude": [
+    "./node_modules",
+    "./log.txt"
+  ],
+  "include": [
+    "./app/**/*.ts"
+  ]
 }

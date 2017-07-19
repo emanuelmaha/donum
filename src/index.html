@@ -1,12 +1,41 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <base href="/" />
+    <base href="./" />
     <title>Donum GRP Church</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="../node_modules/normalize.css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/chartist/dist/chartist.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/fullcalendar/dist/fullcalendar.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/handsontable/dist/handsontable.full.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/ng2-slim-loading-bar/style.css">
+    <!-- Insert this line above script imports  -->
+    <script>
+        if (typeof module === 'object') { window.module = module; module = undefined; }
+    </script>
+    <!-- normal script imports etc  -->
+    <script src="..\node_modules\jquery\dist\jquery.js"></script>
+    <script src="../node_modules/easy-pie-chart/dist/jquery.easypiechart.js"></script>
+    <script src="../node_modules/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="../node_modules/tether/dist/js/tether.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../node_modules/handsontable/dist/handsontable.full.js"></script>
+    <script src="../node_modules/chroma-js/chroma.js"></script>
+    <script>
+        require('electron-connect').client.create()
+    </script>
+    <!-- Insert this line after script imports -->
+    <script>
+        if (window.module) module = window.module;
+    </script>
 </head>
+
 <body>
-    <app-root>Loading...</app-root>
+    <app-root></app-root>
 </body>
+
 </html>

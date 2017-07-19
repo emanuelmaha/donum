@@ -1,0 +1,22 @@
+{
+    "title": "Link",
+    "description": "Menu link",
+    "version": 0,
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "primary": true
+        },
+        "value": {
+            "type": "string"
+        },
+        "id": {
+            "type": "number"
+        },
+        "permision": {
+            "type": "string"
+        }
+    },
+    "required": ["id", "value"]
+}

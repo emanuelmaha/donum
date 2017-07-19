@@ -2,8 +2,7 @@
 import { MockBackend, MockConnection } from '@angular/http/testing';
 import { EndPoint } from './endPoint'
 
-export function backendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend) {
-    let endPoint = new EndPoint();
+export function backendFactory(backend: MockBackend, options: BaseRequestOptions, realBackend: XHRBackend, endPoint: EndPoint) {
     // configure fake backend
     backend.connections.subscribe((connection: MockConnection) => {
         return endPoint.process(connection);
@@ -37,5 +36,5 @@ export let BackendProvider = {
     // use fake backend in place of Http service for backend-less development
     provide: Http,
     useFactory: backendFactory,
-    deps: [MockBackend, BaseRequestOptions, XHRBackend]
+    deps: [MockBackend, BaseRequestOptions, XHRBackend, EndPoint]
 };

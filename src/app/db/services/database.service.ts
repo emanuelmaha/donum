@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import * as RxDB from '../../../../node_modules/rxdb';
 import { RxDatabase, QueryChangeDetector } from '../../../../node_modules/rxdb';
+import { MapDatabase } from './mapDatabase';
 
 QueryChangeDetector.enable();
 QueryChangeDetector.enableDebugging();
@@ -19,54 +20,34 @@ RxDB.plugin(adapters[useAdapter]);
 RxDB.plugin(require('pouchdb-adapter-http'));
 RxDB.plugin(require('pouchdb-replication'));
 
-let collections = [
-    {
-        name: 'hero',
-        schema: require('../schemas/hero.schema.json'),
-        methods: {
-            hpPercent() {
-                return this.hp / this.maxHP * 100;
-            }
-        },
-        sync: true
-    }
-];
-
-console.log('hostname: ' + window.location.hostname);
-const syncURL = 'http://' + window.location.hostname + ':10101/';
-
-let doSync = true;
-if (window.location.hash == '#nosync') doSync = false;
-
 @Injectable()
 export class DatabaseService {
     static dbPromise: Promise<RxDatabase> = null;
     private async _create(): Promise<RxDatabase> {
         console.log('DatabaseService: creating database..');
-        const db = await RxDB.create({ name: 'heroesdb', adapter: useAdapter, password: 'myLongAndStupidPassword' });
+        const db = await RxDB.create({ name: 'donumv1', adapter: useAdapter, password: 'HGF3@Da45De' });
         console.log('DatabaseService: created database');
         window['db'] = db; // write to window for debugging
-
         // show leadership in title
         db.waitForLeadership()
             .then(() => {
                 console.log('isLeader now');
                 document.title = '♛ ' + document.title;
             });
-
+        let collections = MapDatabase.getCollection();
         // create collections
         console.log('DatabaseService: create collections');
         await Promise.all(collections.map(colData => db.collection(colData)));
 
         // hooks
         console.log('DatabaseService: add hooks');
-        db.collections.hero.preInsert(function(docObj) {
-            const color = docObj.color;
-            return db.collections.hero.findOne({ color }).exec()
+        db.collections.user.preInsert(function(docObj) {
+            let username = docObj.username;
+            return db.collections.user.findOne({ username }).exec()
                 .then(has => {
                     if (has != null) {
-                        alert('another hero already has the color ' + color);
-                        throw new Error('color already there');
+                        alert('Please choose another username!');
+                        throw new Error('Username already taken!');
                     }
                     return db;
                 });
@@ -76,9 +57,7 @@ export class DatabaseService {
         console.log('DatabaseService: sync');
         collections
             .filter(col => col.sync)
-            .map(col => col.name)
-            .forEach(colName => db[colName].sync(syncURL + colName + '/'));
-
+            .map(col => col.name);
         return db;
     }
 

@@ -1,0 +1,43 @@
+{
+    "title": "member",
+    "description": "member schema",
+    "version": 0,
+    "type": "object",
+    "primaryKey" : "firstName,lastName",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "middleName": {
+            "type": "string"
+        },
+        "age": {
+            "type": "number"
+        },
+        "dateOfBirthday": {
+            "type": "string"
+        },
+        "address": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        },
+        "phoneNumber": {
+            "type": "number"
+        },
+        "id": {
+            "type": "number"
+        },
+        "relativeId": {
+            "type": "array"
+        }
+    },
+    "required": [
+        "id",
+        "firstName"
+    ]
+}

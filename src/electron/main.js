@@ -11,14 +11,9 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, '../node_modules', '.bin', 'electron'),
-  hardResetMethod: 'exit'
-});
-
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1200, height: 900})
+  mainWindow = new BrowserWindow({ width: 1200, height: 900 })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

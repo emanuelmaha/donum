@@ -1,0 +1,28 @@
+{
+    "title": "User",
+    "description": "user schema",
+    "version": 0,
+    "type": "object",
+    "primaryKey": "name",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "password": {
+            "type": "string"
+        },
+        "username": {
+            "type": "string"
+        },
+        "email": {
+            "type": "string"
+        },
+        "id": {
+            "type": "number"
+        },
+        "permision": {
+            "type": "string"
+        }
+    },
+    "required": ["username", "password","id"]
+}
