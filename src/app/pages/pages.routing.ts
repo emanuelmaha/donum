@@ -11,16 +11,14 @@ export const routes: Routes = [
     loadChildren: 'app/pages/login/login.module#LoginModule',
   },
   {
-    path: 'register',
-    loadChildren: 'app/pages/register/register.module#RegisterModule',
-  },
-  {
     path: 'pages',
     component: Pages,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
-      { path: 'forms', loadChildren: './forms/forms.module#FormsModule' },
+      { path: 'member', loadChildren: './member/member.module#MemberModule' },
+      { path: 'finance', loadChildren: './finance/finance.module#FinanceModule' },
+     // { path: 'logout', loadChildren: './logout/finance.module#FinanceModule' },
     ],
   },
 ];

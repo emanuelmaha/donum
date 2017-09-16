@@ -10,12 +10,14 @@ import { Calendar } from './calendar';
 import { CalendarService } from './calendar/calendar.service';
 import { Todo } from './todo';
 import { TodoService } from './todo/todo.service';
+import { MomentModule } from 'angular2-moment/moment.module'
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     NgaModule,
+    MomentModule,
     routing,
   ],
   declarations: [

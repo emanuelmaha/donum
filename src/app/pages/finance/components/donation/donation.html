@@ -1,0 +1,7 @@
+<div class="donations">
+  <div class="row">
+    <ba-card cardTitle="List of Donations" baCardClass="with-scroll" class="smart-table-container">
+      <ng2-smart-table [settings]="settings" [source]="source" (deleteConfirm)="delete($event)" (createConfirm)="add($event)" (editConfirm)="edit($event)"></ng2-smart-table>
+    </ba-card>
+  </div>
+</div>

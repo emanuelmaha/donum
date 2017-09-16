@@ -1,8 +1,6 @@
 <div class="auth-main">
   <div class="auth-block">
     <h1>Login Donum</h1>
-    <a routerLink="/register" class="auth-link">New User</a>
-
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
       <div class="form-group row" [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}">
         <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
@@ -26,7 +24,7 @@
       </div>
     </form>
 
-    <div class="auth-sep"><span><span>{{'login.sign_from_app_text'}}</span></span>
+    <div class="auth-sep"><span><span>In God we trust</span></span>
     </div>
 
   </div>

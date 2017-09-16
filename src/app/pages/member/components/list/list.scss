@@ -1,0 +1,33 @@
+@import '../../../../theme/sass/conf/conf';
+
+
+.list-members {
+    .member-head {
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .col-spand {
+        width: 10%;
+    }
+    .col-member {
+        width: 25%;
+    }
+    .col-phone {
+        width: 30%;
+    }
+    .col-action {
+        width: 10%;
+    }
+   
+    b {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .member-info {
+        padding-left: 40px;
+        text-align: left;
+    }
+    
+}

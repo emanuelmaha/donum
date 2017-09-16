@@ -21,13 +21,12 @@ import { PagesModule } from './pages/pages.module';
 // import { BaseRequestOptions } from '@angular/http';
 // import { EndPoint } from './_helpers/endPoint';
 // // map of directives and guards
-// import { AlertComponent } from './_directives/index';
 // import { AuthGuard } from './_guards/index';
 // // database services
 // import { DatabaseService } from './db/services/database.service';
 // // routing 
 // // services 
-// import { AlertService, AuthenticationService, UserService } from './_services/index';
+// import { AuthenticationService, UserService } from './_services/index';
 // used for geting view of the app
 // import { MenuComponent } from './views/menu/index';
 // import { HomeComponent } from './views/home/index';

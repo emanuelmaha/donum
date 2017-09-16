@@ -1,0 +1,34 @@
+<div class="reports">
+  <div class="col-md-6">
+    <ba-card cardTitle="Reports Date" baCardClass="with-scroll" class="smart-table-container">
+        <div class="row">
+            <div class="form-group col-md-6">
+              <label for="reportRange">Date Start</label>
+              <input class="form-control" name="dateStartMemb" [(ngModel)]="dateStartMemb" type="date">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="reportRange">Date End</label>
+              <input class="form-control" name="dateStartMemb" [(ngModel)]="dateEndMemb" type="date">
+            </div>
+        </div>
+    </ba-card>
+  </div>
+  <div class="col-md-6">
+    <ba-card cardTitle="Reports All Members" baCardClass="with-scroll" class="smart-table-container">
+        <div class="form-group">
+            <button type="submit" class="btn btn-medium" [disabled]="loading" (click)="report('all')">Run All Members Report</button>
+          </div>
+    </ba-card>
+  </div>
+  <div class="col-md-6">
+    <ba-card cardTitle="Report Member" baCardClass="with-scroll" class="smart-table-container">
+        <div class="form-group">
+            <label for="reportRange">Member Name</label>
+            <ng2-completer [inputName]="memberName" [(ngModel)]="memberName" [datasource]="dataService" [minSearchLength]="0"></ng2-completer>
+          </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-medium" [disabled]="loading || !memberName" (click)="report('member')">Run Member Report</button>
+        </div>
+    </ba-card>
+  </div>
+</div>

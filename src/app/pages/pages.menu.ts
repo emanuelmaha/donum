@@ -15,11 +15,11 @@ export const PAGES_MENU = [
         },
       },
       {
-        path: 'forms',
+        path: 'member',
         data: {
           menu: {
-            title: 'Forms',
-            icon: 'ion-compose',
+            title: 'Members',
+            icon: 'ion-ios-people',
             selected: false,
             expanded: false,
             order: 400,
@@ -27,29 +27,29 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: 'inputs',
+            path: 'list',
             data: {
               menu: {
-                title: 'Inputs',
+                title: 'All',
               },
             },
           },
           {
-            path: 'layouts',
+            path: 'new',
             data: {
               menu: {
-                title: 'Layouts',
+                title: 'New',
               },
             },
           },
         ],
       },
       {
-        path: '',
+        path: 'finance',
         data: {
           menu: {
-            title: 'Pages',
-            icon: 'ion-document',
+            title: 'Finance',
+            icon: 'ion-cash',
             selected: false,
             expanded: false,
             order: 650,
@@ -57,22 +57,34 @@ export const PAGES_MENU = [
         },
         children: [
           {
-            path: ['/login'],
+            path: 'donation',
             data: {
               menu: {
-                title: 'Login',
+                title: 'Donation',
               },
             },
           },
           {
-            path: ['/register'],
+            path: 'reports',
             data: {
               menu: {
-                title: 'Register',
+                title: 'Reports',
               },
             },
           },
         ],
+      },
+      {
+        path: 'logout',
+        data: {
+          menu: {
+            title: 'Logout',
+            icon: 'ion-android-exit',
+            selected: false,
+            expanded: false,
+            order: 0,
+          },
+        },
       },
     ],
   },

@@ -1,1 +1,17 @@
 @import '../../sass/conf/conf';
+div.collapse-menu-link {
+    font-size: 31px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    line-height: 42px;
+    color: #fff;
+    padding: 0;
+    margin: 11px 0 0 16px;
+    background-color: #282828;
+}
+.ion-navicon:before {
+    background-color: #282828;
+    padding-left: 5px;
+    padding-right: 5px;
+}

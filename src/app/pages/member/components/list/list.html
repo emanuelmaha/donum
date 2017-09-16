@@ -1,0 +1,77 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Delete Member</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+    <strong>Are you sure you want to delete this memeber?</strong>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="c('Yes')">Yes</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('No')">No</button>
+  </div>
+</ng-template>
+
+<div class="list-members horizontal-scroll">
+  <ba-card cardTitle="List of Members">
+    <form>
+      <div class="form-group col-md-8 ">
+        <label for="searchMember">Search Members</label>
+        <input class="form-control" id="searchMember" name="searchBy" [(ngModel)]="searchBy" (ngModelChange)="searchMembers()" placeholder="Member name"
+          type="text">
+      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr class="black-muted-bg">
+            <th class="col-spand"></th>
+            <th class="col-member">Member name</th>
+            <th class="col-phone">Phone</th>
+            <th class="col-action">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let member of members">
+            <tr class="no-top-border">
+              <td>
+                <b class="fa" (click)="member.expanded=!member.expanded" [ngClass]="{'fa-angle-up': member.expanded, 'fa-angle-down': !member.expanded}"></b>
+              </td>
+              <td class="table-arr">{{member.firstName}} {{member.lastName}}
+              </td>
+              <td class="table-arr">{{member.phone}}
+              </td>
+              <td class="table-arr">
+                <b class="fa ion-cash" title="Donations" (click)=donation(member)></b>
+                <b class="fa fa-edit" title="Edit Member" (click)=editMember(member)></b>
+                <b class="fa fa-remove" title="Remove Member" (click)="removeMember(content,member)"></b>
+              </td>
+            </tr>
+            <tr *ngIf="member.expanded">
+              <td colspan="4">
+                <div class="col-md-10 member-info">
+                  <div>
+                    <label>Email:</label>
+                    <span>{{member.email}}</span>
+                  </div>
+                  <div>
+                    <label>Phone:</label>
+                    <span>{{member.phone}}</span>
+                  </div>
+                  <div>
+                    <label>Date of Birthday:</label>
+                    <span>{{member.dateOfBirthday}}</span>
+                  </div>
+                  <div>
+                    <label>Address:</label>
+                    <span>{{member.address}}</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </form>
+  </ba-card>
+</div>

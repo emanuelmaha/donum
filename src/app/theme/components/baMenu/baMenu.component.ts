@@ -24,8 +24,12 @@ export class BaMenu implements OnInit, OnDestroy {
   hoverElemTop: number;
   protected _onRouteChange: Subscription;
   outOfArea: number = -200;
-
+  public isMenuCollapsed:boolean = false;
+  
   constructor(private _router: Router, private _service: BaMenuService, private _state: GlobalState) {
+    this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
+      this.isMenuCollapsed = isCollapsed;
+    });
   }
 
   updateMenu(newMenuItems) {
@@ -61,11 +65,16 @@ export class BaMenu implements OnInit, OnDestroy {
     this._menuItemsSub.unsubscribe();
   }
 
+  public toggleMenu() {
+    this.isMenuCollapsed = !this.isMenuCollapsed;
+    this._state.notifyDataChanged('menu.isCollapsed', this.isMenuCollapsed);
+    return false;
+  }
+  
   hoverItem($event): void {
     this.showHoverElem = true;
     this.hoverElemHeight = $event.currentTarget.clientHeight;
-    // TODO: get rid of magic 66 constant
-    this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top - 66;
+    this.hoverElemTop = $event.currentTarget.getBoundingClientRect().top;
   }
 
   toggleSubMenu($event): boolean {

@@ -2,11 +2,10 @@
     firstName: string;
     lastName: string;
     middleName: string;
-    age: number;
     dateOfBirthday: string;
-    address: number;
+    address: string;
     email: string;
-    phoneNumber: number;
+    phone: string;
     id: number;
     relativeId: number[];
 
@@ -14,32 +13,30 @@
         firstName: string,
         lastName: string,
         middleName: string,
-        age: number,
         dateOfBirthday: string,
-        address: number,
+        address: string,
         email: string,
-        phoneNumber: number,
+        phone: string,
         id: number,
         relativeId: number[]
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
-        this.age = age;
         this.dateOfBirthday = dateOfBirthday;
         this.address = address;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.id = id;
         this.relativeId = relativeId;
     }
 
-    toObject():any {
+    toObject(): any {
         return {
             firstName: this.firstName,
             lastName: this.lastName,
             middleName: this.middleName,
-            id: +this.id
+            id: +this.id,
         }
     }
 }
