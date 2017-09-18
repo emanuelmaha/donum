@@ -110,7 +110,6 @@ export class DonationComponent implements OnInit {
   }
 
   delete(event): void {
-    console.log(event);
     if (window.confirm('Are you sure you want to delete?')) {
       event.confirm.resolve();
     } else {
@@ -119,7 +118,6 @@ export class DonationComponent implements OnInit {
   }
 
   add(event): void {
-    console.log(event);
     let d = new Date();
 
     event.newData.date = d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear()

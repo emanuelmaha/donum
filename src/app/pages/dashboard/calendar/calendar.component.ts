@@ -15,9 +15,6 @@ export class Calendar {
 
   constructor(private _calendarService: CalendarService) {
     this.calendarConfiguration = this._calendarService.getData();
-    console.log(
-      this.calendarConfiguration
-    );
     this.calendarConfiguration.select = (start, end) => this._onSelect(start, end);
   }
 

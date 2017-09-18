@@ -13,7 +13,6 @@ export class UserService {
 
     getById(id: number) {
         let requestOpt = this.jwt({ 'id': id });
-        console.log(requestOpt);
         return this.http.get('/api/user/getUser', requestOpt).map((response: Response) => response.json());
     }
 
