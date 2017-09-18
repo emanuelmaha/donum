@@ -2,7 +2,6 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgUploaderModule } from 'ngx-uploader';
 
 import {
   BaThemeConfig,
@@ -22,7 +21,6 @@ import {
   BaMenu,
   BaMultiCheckbox,
   BaSidebar,
-  BaFileUploader,
 } from './components';
 
 import { BaCardBlur } from './components/baCard/baCardBlur.directive';
@@ -54,7 +52,6 @@ const NGA_COMPONENTS = [
   BaMenu,
   BaMultiCheckbox,
   BaSidebar,
-  BaFileUploader,
 ];
 
 const NGA_DIRECTIVES = [
@@ -85,7 +82,6 @@ const NGA_VALIDATORS = [
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    NgUploaderModule,
   ],
   exports: [
     ...NGA_DIRECTIVES,

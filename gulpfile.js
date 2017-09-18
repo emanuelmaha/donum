@@ -4,10 +4,10 @@ var gulp = require('gulp'),
     del = require('del'),
     sass = require('gulp-sass'),
     shell = require('gulp-shell'),
-    runSeq = require('run-sequence');
- //   config = require("./project-config"),
-   // symdest = require('gulp-symdest'),
-   // electron = require('gulp-atom-electron'),
+    runSeq = require('run-sequence'),
+    //config = require("./project-config"),
+    symdest = require('gulp-symdest'),
+    electron = require('gulp-atom-electron');
 
 /**
  * Cleans our distribution folder
@@ -106,18 +106,18 @@ gulp.task("typescript:watch", function () {
 //         .pipe(symdest('packages/linux'));
 // });
 
-// /**
-//  * Builds the Windows executable file and places it in our
-//  * 'packages' folder
-//  */
-// gulp.task('electron:build:win', function () {
-//     gulp.src(['dist/**/*'])
-//         .pipe(electron({
-//             version: '1.0',
-//             platform: 'win32'
-//         }))
-//         .pipe(symdest('packages/win'));
-// });
+/**
+ * Builds the Windows executable file and places it in our
+ * 'packages' folder
+ */
+gulp.task('electron:build:win', function () {
+    gulp.src(['dist/**/*'])
+        .pipe(electron({
+            version: '1.0',
+            platform: 'win32'
+        }))
+        .pipe(symdest('packages/win'));
+});
 
 /**
  * Umbrella task for executing our build
@@ -131,7 +131,7 @@ gulp.task('electron:build', function (done) {
  */
 gulp.task('electron:package', (done) => {
     return runSeq('build',
-        ['electron:build:win', 'electron:build:osx', 'electron:build:linux'], done);
+        ['electron:build:win'], done);
 });
 
 gulp.task('build', ['electron:build']);
