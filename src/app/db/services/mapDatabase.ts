@@ -3,18 +3,15 @@ export class MapDatabase {
         return [
             {
                 name: 'user',
-                schema: require('../schemas/user.schema.json'),
-                sync: true
+                schema: require('../schemas/user.schema.json')
             },
             {
                 name: 'link',
-                schema: require('../schemas/link.schema.json'),
-                sync: false
+                schema: require('../schemas/link.schema.json')
             },
             {
                 name: 'member',
-                schema: require('../schemas/member.schema.json'),
-                sync: true
+                schema: require('../schemas/member.schema.json')
             }
         ];
     }

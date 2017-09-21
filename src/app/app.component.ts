@@ -1,10 +1,11 @@
-import { Component, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, ViewContainerRef,OnInit, AfterViewInit } from '@angular/core';
 import * as $ from 'jquery';
 
 import { GlobalState } from './global.state';
 import { BaThemePreloader, BaThemeSpinner } from './theme/services';
 import { BaThemeConfig } from './theme/theme.config';
 import { layoutPaths } from './theme/theme.constants';
+import { DatabaseService } from './db/services/database.service';
 
 @Component({
     selector: 'app-root',
@@ -12,14 +13,16 @@ import { layoutPaths } from './theme/theme.constants';
     templateUrl: './app.component.html',
 })
 
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit {
 
     isMenuCollapsed: boolean = false;
 
     constructor(private _state: GlobalState,
         private _spinner: BaThemeSpinner,
         private viewContainerRef: ViewContainerRef,
-        private themeConfig: BaThemeConfig) {
+        private themeConfig: BaThemeConfig,
+        private databaseService: DatabaseService
+    ) {
 
         themeConfig.config();
 
@@ -28,10 +31,18 @@ export class AppComponent implements AfterViewInit {
         });
     }
 
+    ngOnInit(): void {
+        this._show()
+    }
+
     ngAfterViewInit(): void {
         // hide spinner once all loaders are completed
         BaThemePreloader.load().then((values) => {
             this._spinner.hide();
         });
+    }
+    private async _show() {
+        const db = await this.databaseService.get();
+        console.log(db);
     }
 }

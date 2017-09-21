@@ -1,35 +1,27 @@
-﻿export class Member {
-    firstName: string;
-    lastName: string;
-    middleName: string;
-    dateOfBirthday: string;
-    address: string;
-    email: string;
-    phone: string;
-    id: number;
-    relativeId: number[];
+﻿import * as RxDB from 'rxdb';
 
-    constructor(
-        firstName: string,
-        lastName: string,
-        middleName: string,
-        dateOfBirthday: string,
-        address: string,
-        email: string,
-        phone: string,
-        id: number,
-        relativeId: number[]
-    ) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.dateOfBirthday = dateOfBirthday;
-        this.address = address;
-        this.email = email;
-        this.phone = phone;
-        this.id = id;
-        this.relativeId = relativeId;
-    }
+declare interface RxMemeberDocumentData {
+    firstName?: string;
+    lastName?: string;
+    middleName?: string;
+    dateOfBirthday?: string;
+    address?: string;
+    email?: string;
+    phone?: string;
+    id?: number;
+    relativeId?: number[];
+}
+
+export class Member extends RxDB.RxDocument implements RxMemeberDocumentData{
+    firstName?: string;
+    lastName?: string;
+    middleName?: string;
+    dateOfBirthday?: string;
+    address?: string;
+    email?: string;
+    phone?: string;
+    id?: number;
+    relativeId?: number[];
 
     toObject(): any {
         return {
@@ -39,4 +31,7 @@
             id: +this.id,
         }
     }
+}
+
+export class RxMemberCollection extends RxDB.RxCollection<Member> {
 }
