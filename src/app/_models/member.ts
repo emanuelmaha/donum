@@ -12,7 +12,7 @@ declare interface RxMemeberDocumentData {
     relativeId?: number[];
 }
 
-export class Member extends RxDB.RxDocument implements RxMemeberDocumentData{
+export class Member extends RxDB.RxDocument implements RxMemeberDocumentData {
     firstName?: string;
     lastName?: string;
     middleName?: string;
@@ -22,15 +22,6 @@ export class Member extends RxDB.RxDocument implements RxMemeberDocumentData{
     phone?: string;
     id?: number;
     relativeId?: number[];
-
-    toObject(): any {
-        return {
-            firstName: this.firstName,
-            lastName: this.lastName,
-            middleName: this.middleName,
-            id: +this.id,
-        }
-    }
 }
 
 export class RxMemberCollection extends RxDB.RxCollection<Member> {

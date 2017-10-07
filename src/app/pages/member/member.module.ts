@@ -8,6 +8,7 @@ import { routing } from './member.routing';
 
 import { ListComponent, NewComponent } from './components';
 import { MemberComponent } from './member.component';
+import { AlertModule, AlertService } from '../../_helpers/alert/'
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { MemberComponent } from './member.component';
     AngularFormsModule,
     NgaModule,
     NgbRatingModule,
+    AlertModule,
     routing,
   ],
   declarations: [
@@ -22,6 +24,7 @@ import { MemberComponent } from './member.component';
     ListComponent,
     NewComponent,
   ],
+  providers: [AlertService]  
 })
 export class MemberModule {
 }

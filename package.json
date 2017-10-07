@@ -5,7 +5,7 @@
   "angular-cli": {},
   "scripts": {
     "build-electron": "ng build --base-href . && cp src/electron/* dist",
-    "server-electron": "pouchdb-server --host 0.0.0.0 -p 10102 -d /tmp/pouchdb-server/ -n true",
+    "server-electron": "pouchdb-server --host 0.0.0.0 -p 10101 -d /tmp/pouchdb-server/ -n true",
     "server-browser": "pouchdb-server -p 10101 -d /tmp/pouchdb-server/ -n true",
     "build-win": "electron-packager dist --platform win32 ",
     "package": "npm run build-electron && npm run build-win",
@@ -19,12 +19,14 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^4.4.1",
+    "@angular/cdk": "^2.0.0-beta.12",
     "@angular/common": "^4.4.1",
     "@angular/compiler": "^4.4.1",
     "@angular/compiler-cli": "^4.4.1",
     "@angular/core": "^4.4.1",
     "@angular/forms": "^4.4.1",
     "@angular/http": "^4.4.1",
+    "@angular/material": "^2.0.0-beta.12",
     "@angular/platform-browser": "^4.4.1",
     "@angular/platform-browser-dynamic": "^4.4.1",
     "@angular/platform-server": "^4.4.1",

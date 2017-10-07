@@ -5,10 +5,11 @@
 
 import * as RxDB from 'rxdb';
 import { Observable } from 'rxjs';
-import { RxMemberCollection } from '../_models/'
+import { RxMemberCollection, RxDonationCollection } from '../_models/'
 
 export class RxDonumDatabase extends RxDB.RxDatabase {
-    member?: RxMemberCollection;
+    member: RxMemberCollection;
+    donation: RxDonationCollection;
 }
 
 export default {

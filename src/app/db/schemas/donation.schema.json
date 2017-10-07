@@ -1,0 +1,30 @@
+{
+    "title": "donation",
+    "description": "Donation",
+    "version": 0,
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "number"
+        },
+        "sum": {
+            "type": "number"
+        },
+        "memberName": {
+            "type": "string",
+            "index": true
+        },
+        "checkNo": {
+            "type": "string"
+        },
+        "scope": {
+            "type": "string"
+        },
+        "dateOfReceived": {
+            "type": "string"
+        },
+        "createdDate": {
+            "type": "number"
+        }
+    }
+}

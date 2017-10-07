@@ -1,0 +1,48 @@
+﻿<div class="qiss-alert">
+	<button type="button" #openModal class="hidden" data-toggle="modal" data-target="#alert"></button>
+											   
+	<div class="modal fade" id="alert" tabindex="-1" role="dialog" aria-labelledby="alert">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header row">
+					<div class="icons sweet-alert col-md-12">
+						<div class="sa-icon sa-error animateErrorIcon" *ngIf="title == 'Error'">
+							<span class="sa-x-mark animateXMark">
+								<span class="sa-line sa-left"></span>
+								<span class="sa-line sa-right"></span>
+							</span>
+						</div>
+						<div class="sa-icon sa-warning pulseWarning" *ngIf="title == 'Warning'">
+							<span class="sa-body pulseWarningIns"></span>
+							<span class="sa-dot pulseWarningIns"></span>
+						</div>
+						<div class="sa-icon sa-success animate" *ngIf="title == 'Success'">
+							<span class="sa-line sa-tip animateSuccessTip"></span>
+							<span class="sa-line sa-long animateSuccessLong"></span>
+
+							<div class="sa-placeholder"></div>
+							<div class="sa-fix"></div>
+						</div>
+						<div class="sa-icon sa-info" *ngIf="title == 'Info'"></div>
+					</div>
+					<div class="col-md-12 modal-title">
+						<h3 class="modal-title" id="alertTitle">{{title}}</h3>
+					</div>
+
+				</div>
+				<div class="modal-body">
+					{{message}}
+				</div>
+				<div class="modal-footer confirmation-button">
+					<div class="col-md-12" *ngIf="confirmationButtons">
+						<button type="button" class="btn btn-sm btn-secondary" #closeModal data-dismiss="modal">No</button>
+						<button type="button" class="btn btn-sm btn-primary" (click)="confirm()">Yes</button>
+					</div>
+					<div class="col-md-12" *ngIf="!confirmationButtons">
+						<button type="button" class="btn btn-secondary" #closeModal data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

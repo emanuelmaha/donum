@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -53,6 +53,7 @@ export type StoreType = {
         AppComponent,
     ],
     imports: [ // import Angular's modules
+        BrowserAnimationsModule,
         BrowserModule,
         HttpModule,
         RouterModule,

@@ -2,13 +2,19 @@
   <div class="col-md-6">
     <ba-card cardTitle="Reports Date" baCardClass="with-scroll" class="smart-table-container">
         <div class="row">
-            <div class="form-group col-md-6">
-              <label for="reportRange">Date Start</label>
-              <input class="form-control" name="dateStartMemb" [(ngModel)]="dateStartMemb" type="date">
+            <div class="col-md-6">
+              <mat-form-field>
+                <input matInput [matDatepicker]="dateStart" [(ngModel)]="dateStartMemb" placeholder="Date Start">
+                <mat-datepicker-toggle matSuffix [for]="dateStart"></mat-datepicker-toggle>
+                <mat-datepicker #dateStart></mat-datepicker>
+              </mat-form-field>
             </div>
-            <div class="form-group col-md-6">
-              <label for="reportRange">Date End</label>
-              <input class="form-control" name="dateStartMemb" [(ngModel)]="dateEndMemb" type="date">
+            <div class="col-md-6">
+              <mat-form-field>
+                <input matInput [matDatepicker]="dateEnd" [(ngModel)]="dateEndMemb" placeholder="Date End">
+                <mat-datepicker-toggle matSuffix [for]="dateEnd"></mat-datepicker-toggle>
+                <mat-datepicker #dateEnd></mat-datepicker>
+              </mat-form-field>
             </div>
         </div>
     </ba-card>

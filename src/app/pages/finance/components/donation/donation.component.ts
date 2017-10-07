@@ -1,135 +1,140 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Member, Donation } from '../../../../_models';
 import { LocalDataSource } from 'ng2-smart-table';
+import { DatabaseService } from '../../../../db/services/database.service';
+import { RxDonumDatabase } from 'app/db/RxDB';
+import { AlertService, AlertType } from '../../../../_helpers/alert/';
+import { TableSettings } from './table.settings';
+import { CompleterService, CompleterData } from 'ng2-completer';
+
 @Component({
   selector: 'donation',
   templateUrl: './donation.html',
   styleUrls: ['./donation.scss']
 
 })
-export class DonationComponent implements OnInit {
+export class DonationComponent implements OnInit, OnDestroy {
+
+  donation: any = {};
+  donations: any[] = [];
+  members: any = [];
   source: LocalDataSource;
   memberPlaceholder = 'Member name';
   query: string = '';
-
-  settings = {
-    add: {
-      addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-      createButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
-      confirmCreate: true
-    },
-    edit: {
-      editButtonContent: '<i class="ion-edit"></i>',
-      saveButtonContent: '<i class="ion-checkmark"></i>',
-      cancelButtonContent: '<i class="ion-close"></i>',
-      confirmSave: true
-    },
-    delete: {
-      deleteButtonContent: '<i class="ion-trash-a"></i>',
-      confirmDelete: true
-    },
-    columns: {
-      id: {
-        title: 'ID',
-        type: 'number'
-      },
-      memberName: {
-        title: 'Member Name',
-        type: 'string',
-        editor: {
-          type: 'completer',
-          config: {
-            completer: {
-              data: [
-                {
-                  id: 1, firstName: 'Emanuel', lastName: 'Mahalean',
-                  username: 'emanuel', email: 'emanuel@gmail.com', age: 20
-                },
-                {
-                  id: 1, firstName: 'Roby', lastName: 'Mahalean',
-                  username: 'emanuel', email: 'emanuel@gmail.com', age: 20
-                },
-                {
-                  id: 1, firstName: 'Parker', lastName: 'Mahalean',
-                  username: 'emanuel', email: 'emanuel@gmail.com', age: 20
-                },
-                {
-                  id: 1, firstName: 'Jony', lastName: 'Mahalean',
-                  username: 'emanuel', email: 'emanuel@gmail.com', age: 20
-                },
-              ],
-              searchFields: 'firstName',
-              titleField: 'firstName',
-              placeholder: 'Member name',
-              overrideSuggested: true
-            },
-
-          }
-        }
-      },
-      scope: {
-        title: 'Scope',
-        type: 'string'
-      },
-      amount: {
-        title: 'Amount',
-        type: 'number'
-      },
-      date: {
-        title: 'Date',
-        type: 'string'
-      }
-    }
-  };
+  sub: any;
+  db: RxDonumDatabase;
+  dateOfReceived: Date;
+  settings = TableSettings.GetSettings();
+  dataCompleterService: any;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private databaseService: DatabaseService,
+    private alert: AlertService,
+    private zone: NgZone,
+    private completerService: CompleterService
   ) {
-    let donations = [
-      { id: 1, memberName: 'Petru Vasile', scope: 'Ajutor', amount: 12.4, date: "08/15/2017" },
-      { id: 2, memberName: 'Ion Vasile', scope: 'Ajutor', amount: 200, date: "08/15/2017" },
-      { id: 3, memberName: 'Marku Vasile', scope: 'Ajutor', amount: 120.4, date: "08/15/2017" },
-      { id: 4, memberName: 'Tudor Ilies', scope: 'Ajutor', amount: 150, date: "08/15/2017" },
-    ];
-    this.source = new LocalDataSource(donations);
+    this.dataCompleterService = this.completerService.local(this.members, 'firstName,lastName', 'firstName,lastName');
+    this._show();
   }
 
   ngOnInit() {
-    let memberId = this.route.snapshot.queryParams['memberId'];
-    if (memberId) {
+    let memberName = this.route.snapshot.queryParams['memberName'];
+    if (memberName) {
       this.source.setFilter([
         {
-          field: 'id',
-          search: memberId
+          field: 'memberName',
+          search: memberName
         }
       ], false)
     }
   }
 
-  delete(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
+  private async _show() {
+    this.db = await this.databaseService.get();
+    this.db.donation.find({ sort: [{ id: 'desc' }] }).exec().then(
+      donations => {
+        if (Array.isArray(donations)) {
+          for (let donation of donations) {
+            this.donations.push(donation.toJSON());
+          }
+        }
+        this.updateTableSource();
+      });
+
+    const members$ = this.db.member.find().$;
+    this.sub = members$.subscribe(members => {
+      if (Array.isArray(members)) {
+        let membersJson = []
+        members.forEach((m) => {
+          this.members.push(m.toJSON())
+        })
+        this.zone.run(() => { });
+      }
+    });
+
+    this.donation = this.db.donation.newDocument({});
+  }
+
+  updateTableSource() {
+    if (!this.source) {
+      this.source = new LocalDataSource(this.donations);
     }
+    this.source.setSort([{ field: 'id', direction: 'desc' }])
+  }
+
+  delete(event): void {
+    this.alert.showAlert('Are you sure you want to delete this user?', AlertType.Warrning, true).subscribe(
+      (resp) => {
+        if (resp) {
+          let query = this.db.donation.findOne().where("_rev").eq(event.data._rev);
+          query.remove();
+          event.confirm.resolve();
+        } else {
+          event.confirm.reject();
+        }
+      }
+    )
   }
 
   add(event): void {
-    let d = new Date();
-
-    event.newData.date = d.getMonth() + "/" + d.getDate() + "/" + d.getFullYear()
-    event.confirm.resolve(event.newData);
-  }
-
-  edit(event): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
-    } else {
-      event.confirm.reject();
+    let d = new Date(this.dateOfReceived);
+    if (!this.dateOfReceived) {
+      d = new Date();
     }
+
+    let dateOfReceived = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear()
+    this.donation.dateOfReceived = dateOfReceived
+    this.donation.id = this.donations.length + 1;
+    this.donation.createdDate = d.getTime();
+    this.donation.sum = Number(this.donation.sum) == null ? 0 : Number(this.donation.sum);
+
+    this.donation.save().then(
+      (success) => {
+        this.donations.push(this.donation);
+        this.updateTableSource()
+        this.donation = this.db.donation.newDocument({});
+        this.zone.run(() => { });
+      },
+      (error) => {
+        this.showError("Please verify the input fields. There is an error on your request!");
+      }
+    );
   }
 
+  async edit(event) {
+    let query = this.db.donation.findOne().where("_rev").eq(event.data._rev);
+    await query.update(event.newData);
+    event.confirm.resolve();
+  }
+
+  showError(arg: any): any {
+    this.alert.showAlert(arg, AlertType.Error);
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
 }
