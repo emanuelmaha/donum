@@ -30,10 +30,16 @@
     <ba-card cardTitle="Report Member" baCardClass="with-scroll" class="smart-table-container">
         <div class="form-group">
             <label for="reportRange">Member Name</label>
-            <ng2-completer [inputName]="memberName" [(ngModel)]="memberName" [datasource]="dataService" [minSearchLength]="0"></ng2-completer>
+            <ng2-completer [inputName]="memberName" [(ngModel)]="memberName" [clearSelected]="true" [textNoResults]="textNoResult" (selected)="selectMember($event)" [datasource]="dataService" [minSearchLength]="0"></ng2-completer>
+        </div>
+        <div class="report-members">
+          <label>Run report for:</label>
+          <div *ngFor="let member of membersView">
+            <i class="fa fa-times" aria-hidden="true" (click)="removeMember(member)"></i> {{member.firstName}} {{member.lastName}} 
           </div>
+        </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-medium" [disabled]="loading || !memberName" (click)="report('member')">Run Member Report</button>
+          <button type="submit" class="btn btn-medium" [disabled]="loading || membersView.length == 0" (click)="buildReportMember()">Run Member Report</button>
         </div>
     </ba-card>
   </div>

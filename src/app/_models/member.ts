@@ -1,6 +1,6 @@
-﻿import * as RxDB from 'rxdb';
+﻿import { RxCollection,RxDocument } from 'rxdb';
 
-declare interface RxMemeberDocumentData {
+declare interface IMember {
     firstName?: string;
     lastName?: string;
     middleName?: string;
@@ -12,7 +12,7 @@ declare interface RxMemeberDocumentData {
     relativeId?: number[];
 }
 
-export class Member extends RxDB.RxDocument implements RxMemeberDocumentData {
+declare class Member extends RxDocument implements IMember {
     firstName?: string;
     lastName?: string;
     middleName?: string;
@@ -24,5 +24,11 @@ export class Member extends RxDB.RxDocument implements RxMemeberDocumentData {
     relativeId?: number[];
 }
 
-export class RxMemberCollection extends RxDB.RxCollection<Member> {
+declare class RxMemberCollection extends RxCollection<Member> {
+}
+
+export {
+    IMember as IMember,
+    Member as Member,
+    RxMemberCollection as RxMemberCollection
 }

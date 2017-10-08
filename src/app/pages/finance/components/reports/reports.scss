@@ -1,4 +1,16 @@
 .reports {
+
+    .report-members {
+        margin-bottom: 10px;
+       
+        div {
+          margin-left: 10px;      
+        }
+
+        .fa {
+            cursor: pointer;
+        }
+    }
     ::ng-deep .completer-input {
         display: block;
         width: 100%;

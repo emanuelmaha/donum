@@ -1,6 +1,6 @@
 import { RxCollection,RxDocument } from 'rxdb';
 
-declare interface DonationDocumentData {
+declare interface IDonation {
     id?:number;
     memberName?: string;
     dateOfReceived?: string;
@@ -10,7 +10,7 @@ declare interface DonationDocumentData {
     scope?: string;
 }
 
-export class Donation extends RxDocument implements DonationDocumentData {
+declare class Donation extends RxDocument implements IDonation {
     id: number;
     memberName: string;
     dateOfReceived: string;
@@ -18,32 +18,13 @@ export class Donation extends RxDocument implements DonationDocumentData {
     checkNo: string;
     sum: number;
     scope:string;
-
-    static GroupDonationByMemberName(donations: Donation[]): Donation[] {
-        let result = []
-
-        for(let donation of donations) {
-            let exit = result.filter(d => d.memberName == donation.memberName);
-            if(exit.length > 0){
-                exit[0].sum +=donation.sum;
-            } else {
-                result.push(donation);
-            }
-        }
-
-        return result;
-    }
-
-    static GetToatalDonation(donations: Donation[]) :number {
-        let result = 0;
-        for(let donation of donations) {
-            result += donation.sum;
-        }
-
-        return result;
-    }
 }
 
+declare class RxDonationCollection extends RxCollection<Donation> {
+}
 
-export class RxDonationCollection extends RxCollection<Donation> {
+export {
+    IDonation as IDonation,
+    Donation as Donation,
+    RxDonationCollection as RxDonationCollection
 }
