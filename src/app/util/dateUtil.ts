@@ -1,5 +1,5 @@
 export class DateUtil {
     static getUSDateFormat(date = new Date()): string {
-        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
       }
 }

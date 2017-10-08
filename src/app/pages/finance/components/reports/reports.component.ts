@@ -55,8 +55,10 @@ export class ReportsComponent implements OnDestroy {
 
   selectMember(selected: any) {
     if (selected && selected.originalObject) {
+      this.loading = true;
       let member = new MemberView()
       member.fromJson(selected.originalObject);
+      this.getDonations(member);
       this.membersView.push(member);
     }
   }
@@ -100,10 +102,8 @@ export class ReportsComponent implements OnDestroy {
     var doc = new jsPDF();
     let membersName = ''
     this.membersView.forEach(element => {
-      this.getDonations(element);
       membersName += element.firstName + '-' + element.lastName + '_'
     });
-    console.log(this.membersView);
     PdfWriter.buildReportMembers(doc, this.dateStartMemb, this.dateEndMemb, this.membersView);
 
     doc.save('DonationReport_' + membersName.slice(0, -1) + '_' + today + '.pdf');
@@ -116,7 +116,7 @@ export class ReportsComponent implements OnDestroy {
     doc.save('DonationReport_AllMember_' + today + '.pdf');
   }
 
-  private getDonations(member: MemberView) {
+   getDonations(member: MemberView) {
     this.db.donation.find({
       createdDate: {
         $gte: this.dateStartMemb.getTime(),
@@ -126,8 +126,8 @@ export class ReportsComponent implements OnDestroy {
         $eq: member.firstName + ' ' + member.lastName
       }
     }).exec().then((donation) => {
-      
       member.donations = donation;
+      this.loading = false;
     });
   }
   ngOnDestroy() {

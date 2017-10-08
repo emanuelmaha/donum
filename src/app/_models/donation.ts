@@ -2,6 +2,7 @@ import { RxCollection,RxDocument } from 'rxdb';
 
 declare interface IDonation {
     id?:number;
+    memberId?:string;
     memberName?: string;
     dateOfReceived?: string;
     createdDate?: string;
@@ -13,6 +14,7 @@ declare interface IDonation {
 declare class Donation extends RxDocument implements IDonation {
     id: number;
     memberName: string;
+    memberId:string;
     dateOfReceived: string;
     createdDate: string;
     checkNo: string;

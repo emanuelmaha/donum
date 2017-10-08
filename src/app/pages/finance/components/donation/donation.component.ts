@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Member, Donation } from '../../../../_models';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -12,9 +12,8 @@ import { CompleterService, CompleterData } from 'ng2-completer';
   selector: 'donation',
   templateUrl: './donation.html',
   styleUrls: ['./donation.scss']
-
 })
-export class DonationComponent implements OnInit, OnDestroy {
+export class DonationComponent {
 
   donation: any = {};
   donations: any[] = [];
@@ -27,6 +26,7 @@ export class DonationComponent implements OnInit, OnDestroy {
   dateOfReceived: Date;
   settings = TableSettings.GetSettings();
   dataCompleterService: any;
+  selectedMember: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,23 +37,30 @@ export class DonationComponent implements OnInit, OnDestroy {
     private completerService: CompleterService
   ) {
     this.dataCompleterService = this.completerService.local(this.members, 'firstName,lastName', 'firstName,lastName');
-    this._show();
+    this.getDBData();
   }
 
-  ngOnInit() {
-    let memberName = this.route.snapshot.queryParams['memberName'];
-    if (memberName) {
+  checkFilter() {
+    let memberId = JSON.parse(this.route.snapshot.queryParams['memberId']);
+    if (memberId) {
       this.source.setFilter([
         {
-          field: 'memberName',
-          search: memberName
+          field: 'memberId',
+          search: memberId
         }
       ], false)
     }
   }
 
-  private async _show() {
+  selectMember(member: any) {
+    if (member && member.originalObject) {
+      this.selectedMember = member.originalObject;
+    }
+  }
+
+  private async getDBData() {
     this.db = await this.databaseService.get();
+
     this.db.donation.find({ sort: [{ id: 'desc' }] }).exec().then(
       donations => {
         if (Array.isArray(donations)) {
@@ -62,12 +69,12 @@ export class DonationComponent implements OnInit, OnDestroy {
           }
         }
         this.updateTableSource();
+        this.zone.run(() => { });
+
       });
 
-    const members$ = this.db.member.find().$;
-    this.sub = members$.subscribe(members => {
+    this.db.member.find().exec().then(members => {
       if (Array.isArray(members)) {
-        let membersJson = []
         members.forEach((m) => {
           this.members.push(m.toJSON())
         })
@@ -81,12 +88,13 @@ export class DonationComponent implements OnInit, OnDestroy {
   updateTableSource() {
     if (!this.source) {
       this.source = new LocalDataSource(this.donations);
+      this.checkFilter();      
     }
     this.source.setSort([{ field: 'id', direction: 'desc' }])
   }
 
   delete(event): void {
-    this.alert.showAlert('Are you sure you want to delete this user?', AlertType.Warrning, true).subscribe(
+    let sub = this.alert.showAlert('Are you sure you want to delete this user?', AlertType.Warrning, true).subscribe(
       (resp) => {
         if (resp) {
           let query = this.db.donation.findOne().where("_rev").eq(event.data._rev);
@@ -95,11 +103,17 @@ export class DonationComponent implements OnInit, OnDestroy {
         } else {
           event.confirm.reject();
         }
+        sub.unsubscribe();
       }
     )
   }
 
   add(event): void {
+    if (!this.selectedMember) {
+      this.alert.showAlert('Selected member is not in our system please add the member in section Members/New', AlertType.Error);
+      return;
+    }
+
     let d = new Date(this.dateOfReceived);
     if (!this.dateOfReceived) {
       d = new Date();
@@ -108,6 +122,7 @@ export class DonationComponent implements OnInit, OnDestroy {
     let dateOfReceived = (d.getMonth() + 1) + "/" + d.getDate() + "/" + d.getFullYear()
     this.donation.dateOfReceived = dateOfReceived
     this.donation.id = this.donations.length + 1;
+    this.donation.memberId = this.selectedMember._id;
     this.donation.createdDate = d.getTime();
     this.donation.sum = Number(this.donation.sum) == null ? 0 : Number(this.donation.sum);
 
@@ -116,6 +131,7 @@ export class DonationComponent implements OnInit, OnDestroy {
         this.donations.push(this.donation);
         this.updateTableSource()
         this.donation = this.db.donation.newDocument({});
+        this.selectedMember = null;
         this.zone.run(() => { });
       },
       (error) => {
@@ -132,9 +148,5 @@ export class DonationComponent implements OnInit, OnDestroy {
 
   showError(arg: any): any {
     this.alert.showAlert(arg, AlertType.Error);
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
   }
 }

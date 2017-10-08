@@ -7,8 +7,8 @@
         "id": {
             "type": "number"
         },
-        "sum": {
-            "type": "number"
+        "memberId": {
+            "type":"string"
         },
         "memberName": {
             "type": "string",
@@ -24,6 +24,9 @@
             "type": "string"
         },
         "createdDate": {
+            "type": "number"
+        },
+        "sum": {
             "type": "number"
         }
     }

@@ -3,7 +3,7 @@
     <ba-card cardTitle="List of Donations" baCardClass="with-scroll" class="smart-table-container">
       <div class="row">
         <div class="input-group col-sm-3">
-            <ng2-completer class="col-sm-12" [(ngModel)]="donation.memberName" [placeholder]="'Member Name'" [autoMatch]="true" [datasource]="dataCompleterService" [textSearching]="" [minSearchLength]="0"></ng2-completer>
+            <ng2-completer class="col-sm-12" (selected)="selectMember($event)" [(ngModel)]="donation.memberName" [placeholder]="'Member Name'" [autoMatch]="true" [datasource]="dataCompleterService" [textSearching]="" [minSearchLength]="0"></ng2-completer>
         </div>
         <div class="input-group col-sm-1">
           <input class="form-control" placeholder="Check no" [(ngModel)]="donation.checkNo" name="checkNo" type="text">

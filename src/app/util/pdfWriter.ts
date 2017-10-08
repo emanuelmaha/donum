@@ -20,19 +20,14 @@ export class PdfWriter {
         let forMembers = ''
         let donationsAll = [];
         members.forEach(element => {
-            forMembers += element.getFullName() + ',';
-            console.log(element);
-            
+            forMembers += element.getFullName() + ', ';
             if (Array.isArray(element.donations)) {
                 element.donations.forEach(don => {
-                    console.log(don);
                     donationsAll.push(don);
                 });
             }
         });
-        console.log(donationsAll);
-        
-        forMembers = forMembers.slice(0, -1);
+        forMembers = forMembers.slice(0, -2);
 
         PdfWriter.writeHeader(doc);
         PdfWriter.writeReportTitle(doc, forMembers, startDate, endDate);
@@ -76,19 +71,6 @@ export class PdfWriter {
         doc.line(5, 69, 205, 69);
     }
 
-    static writeTableMember(doc: jsPDF) {
-        doc.setLineWidth(1)
-        doc.line(5, 60, 205, 60);
-        doc.setFontSize(14);
-        doc.text('Num', 30, 66);
-        doc.text('Date', 50, 66);
-        doc.text('Memo', 100, 66);
-        doc.text('Check', 150, 66);
-        doc.text('Amount', 175, 66);
-        doc.setLineWidth(0.5)
-        doc.line(5, 69, 205, 69);
-    }
-
     static writeDonationsAll(doc: jsPDF, donations: IDonation[]): any {
         doc.setFontSize(12)
         let lineY = 75;
@@ -109,20 +91,31 @@ export class PdfWriter {
         return lineY
     }
 
+    static writeTableMember(doc: jsPDF) {
+        doc.setLineWidth(1)
+        doc.line(5, 60, 205, 60);
+        doc.setFontSize(14);
+        doc.text('Num', 40, 66);
+        doc.text('Date', 60, 66);
+        doc.text('Memo', 85, 66);
+        doc.text('Check', 150, 66);
+        doc.text('Amount', 175, 66);
+        doc.setLineWidth(0.5)
+        doc.line(5, 69, 205, 69);
+    }
+
     static writeDonationsMember(doc: jsPDF, members: MemberView[]): any {
         doc.setFontSize(12)
         let lineY = 75;
         let index = 1;
         for (let member of members) {
-            doc.text(member.getFullName(), 10, lineY);
-            if (Array.isArray(member.donations)) {
-                console.log(member);
+            if (Array.isArray(member.donations) && member.donations.length > 0) {
+                doc.text(member.getFullName(), 10, lineY);
+                lineY += 7
                 for (let donation of member.donations) {
-                    console.log(donation)
-                    //doc.text(index.toString(), 10, lineY);
-                    doc.text(donation.id.toString(), 30, lineY)
-                    doc.text(donation.dateOfReceived, 50, lineY)
-                    doc.text(donation.scope == null ? '' : donation.scope, 100, lineY);
+                    doc.text(donation.id.toString(), 40, lineY)
+                    doc.text(donation.dateOfReceived, 60, lineY)
+                    doc.text(donation.scope == null ? '' : donation.scope, 85, lineY);
                     doc.text(donation.checkNo == null ? '' : donation.checkNo, 150, lineY);
                     doc.text(donation.sum.toString() + ' $', 175, lineY);
                     lineY += 7;

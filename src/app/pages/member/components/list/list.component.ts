@@ -1,4 +1,4 @@
-import { Component, OnDestroy, NgZone, AfterViewInit } from '@angular/core';
+import { Component, NgZone, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Member } from '../../../../_models';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,7 @@ import { RxDonumDatabase } from 'app/db/RxDB';
   styleUrls: ['./list.scss']
 
 })
-export class ListComponent implements OnDestroy {
+export class ListComponent {
   members: Member[] | Member;
   membersData: Member[] | Member;
   searchBy: string = '';
@@ -41,6 +41,7 @@ export class ListComponent implements OnDestroy {
       } else {
         this.members = members;
       }
+      this.sub.unsubscribe();
       this.zone.run(() => { });
     });
   }
@@ -54,11 +55,12 @@ export class ListComponent implements OnDestroy {
   }
 
   removeMember(id: string) {
-    this.alert.showAlert('Are you sure you want to delete this memeber?', AlertType.Warrning, true).subscribe(
+    let sub = this.alert.showAlert('Are you sure you want to delete this memeber?', AlertType.Warrning, true).subscribe(
       (resp) => {
         if (resp) {
           let query = this.db.member.findOne().where("_rev").eq(id);
           query.remove();
+          sub.unsubscribe();
         }
       }
     );
@@ -68,11 +70,7 @@ export class ListComponent implements OnDestroy {
     this.router.navigate(['/pages/member/new'], { queryParams: { memberId: JSON.stringify(id) } });
   }
 
-  donation(member: Member) {
-    this.router.navigate(['/pages/finance/donation'], { queryParams: { memberId: JSON.stringify(member.id) } });
-  }
-
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  donation(id: string) {
+    this.router.navigate(['/pages/finance/donation'], { queryParams: { memberId: JSON.stringify(id) } });
   }
 }
