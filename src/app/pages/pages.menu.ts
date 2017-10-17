@@ -75,6 +75,28 @@ export const PAGES_MENU = [
         ],
       },
       {
+        path: 'utils',
+        data: {
+          menu: {
+            title: 'Utils',
+            icon: 'ion-cash',
+            selected: false,
+            expanded: false,
+            order: 660,
+          },
+        },
+        children: [
+          {
+            path: 'migration',
+            data: {
+              menu: {
+                title: 'Data Base Migration',
+              },
+            },
+          }
+        ],
+      },
+      {
         path: 'logout',
         data: {
           menu: {

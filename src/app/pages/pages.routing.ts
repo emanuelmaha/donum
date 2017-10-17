@@ -1,9 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { Pages } from './pages.component';
 import { ModuleWithProviders } from '@angular/core';
-// noinspection TypeScriptValidateTypes
-
-// export function loadChildren(path) { return System.import(path); };
 
 export const routes: Routes = [
   {
@@ -18,7 +15,8 @@ export const routes: Routes = [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'member', loadChildren: './member/member.module#MemberModule' },
       { path: 'finance', loadChildren: './finance/finance.module#FinanceModule' },
-     // { path: 'logout', loadChildren: './logout/finance.module#FinanceModule' },
+      { path: 'utils', loadChildren: './utils/utils.module#UtilsModule' },
+      // { path: 'logout', loadChildren: './logout/finance.module#FinanceModule' },
     ],
   },
 ];

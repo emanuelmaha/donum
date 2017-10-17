@@ -41,14 +41,16 @@ export class DonationComponent {
   }
 
   checkFilter() {
-    let memberId = JSON.parse(this.route.snapshot.queryParams['memberId']);
-    if (memberId) {
-      this.source.setFilter([
-        {
-          field: 'memberId',
-          search: memberId
-        }
-      ], false)
+    if (this.route.snapshot.queryParams['memberId']) {
+      let memberId = JSON.parse(this.route.snapshot.queryParams['memberId']);
+      if (memberId) {
+        this.source.setFilter([
+          {
+            field: 'memberId',
+            search: memberId
+          }
+        ], false)
+      }
     }
   }
 
@@ -88,7 +90,7 @@ export class DonationComponent {
   updateTableSource() {
     if (!this.source) {
       this.source = new LocalDataSource(this.donations);
-      this.checkFilter();      
+      this.checkFilter();
     }
     this.source.setSort([{ field: 'id', direction: 'desc' }])
   }

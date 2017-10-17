@@ -5,16 +5,15 @@
   "angular-cli": {},
   "scripts": {
     "build-electron": "ng build --base-href . && cp src/electron/* dist",
-    "server-electron": "pouchdb-server --host 0.0.0.0 -p 10101 -d /tmp/pouchdb-server/ -n true",
-    "server-browser": "pouchdb-server -p 10101 -d /tmp/pouchdb-server/ -n true",
+    "pouchdb-server": "pouchdb-server -p 10101 -d /tmp/pouchdb-server/ -n true",
     "build-win": "electron-packager dist --platform win32 ",
     "package": "npm run build-electron && npm run build-win",
     "start": "npm run build-electron && electron dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "run-browser": "concurrently \"npm run server-browser\" \"ng serve\" ",
-    "run-electron": "concurrently \"npm run server-electron\" \"npm run start\""
+    "run-browser": "concurrently \"npm run pouchdb-server\" \"ng serve\" ",
+    "run-electron": "concurrently \"npm run pouchdb-server\" \"npm run start\""
   },
   "private": true,
   "dependencies": {
@@ -48,6 +47,7 @@
     "ng2-completer": "1.3.1",
     "ng2-slim-loading-bar": "4.0.0",
     "ng2-smart-table": "1.0.3",
+    "ngx-electron": "^1.0.3",
     "normalize.css": "6.0.0",
     "pouchdb-adapter-http": "^6.2.0",
     "pouchdb-adapter-idb": "^6.2.0",

@@ -25,7 +25,7 @@ RxDB.plugin(adapters[useAdapter]);
 
 
 console.log('hostname: ' + window.location.hostname);
-const syncURL = 'http://' + window.location.hostname + ':10101/';
+const syncURL = 'http://127.0.0.1:10101/';
 console.log(syncURL);
 
 @Injectable()
@@ -67,7 +67,7 @@ export class DatabaseService {
                 });
         });
 
-        // sync
+        //sync
         console.log('DatabaseService: sync');
         collections
             .map(col => col.name)

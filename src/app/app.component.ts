@@ -13,7 +13,7 @@ import { DatabaseService } from './db/services/database.service';
     templateUrl: './app.component.html',
 })
 
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements AfterViewInit {
 
     isMenuCollapsed: boolean = false;
 
@@ -23,16 +23,10 @@ export class AppComponent implements OnInit, AfterViewInit {
         private themeConfig: BaThemeConfig,
         private databaseService: DatabaseService
     ) {
-
         themeConfig.config();
-
         this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
             this.isMenuCollapsed = false;
         });
-    }
-
-    ngOnInit(): void {
-        this._show()
     }
 
     ngAfterViewInit(): void {
@@ -40,9 +34,5 @@ export class AppComponent implements OnInit, AfterViewInit {
         BaThemePreloader.load().then((values) => {
             this._spinner.hide();
         });
-    }
-    private async _show() {
-        const db = await this.databaseService.get();
-        console.log(db);
     }
 }

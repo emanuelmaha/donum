@@ -1,8 +1,9 @@
 const electron = require('electron')
+
+const fs = require('fs');
+
 // Module to control application life.
-const app = electron.app
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+var {app, BrowserWindow, ipcMain} = electron; 
 
 const path = require('path')
 const url = require('url')
@@ -56,5 +57,25 @@ app.on('activate', function () {
   }
 })
 
+
+ipcMain.on('saveExport', (event, arg) => {
+  
+  // dialog.showSaveDialog((fileName) => {
+  //   if (fileName === undefined){
+  //       console.log("You didn't save the file");
+  //       return;
+  //   }
+
+    // fileName is a string that contains the path and filename created in the save file dialog.  
+    fs.writeFile('C:\\documents\test.txt', arg, (err) => {
+        if(err){
+          console.log("An error ocurred creating the file "+ err.message)
+        }
+                    
+        console.log("The file has been succesfully saved");
+    });
+// }); 
+  event.returnValue = 'pong'
+})
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
