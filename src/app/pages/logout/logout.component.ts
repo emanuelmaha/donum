@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthGuard } from '../../_guards/index';
+import { AuthenticationService } from 'app/_services';
 
 @Component({
   selector: 'logout',
@@ -7,10 +9,11 @@ import { Component } from '@angular/core';
 })
 export class Logout {
 
-  constructor() {
+  constructor(private auth: AuthenticationService) {
     this.logout();
   }
 
   public logout(): void {
+    this.auth.logout();
   }
 }

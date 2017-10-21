@@ -43,3 +43,6 @@ Thumbs.db
 
 #Exe
 /donum-win32-x64
+
+#DataBase
+/database

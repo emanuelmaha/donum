@@ -3,6 +3,9 @@
 $sidebar-scroll-width: 4px;
 $angle-left: '\f100';
 $angle-right: '\f101';
+.welcome-user {
+  font-size: 12px;
+}
 
 @mixin default-sublist() {
   padding: 0;

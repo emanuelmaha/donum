@@ -85,7 +85,6 @@ export class UserSvc extends Service {
         }
 
         // save new user
-        user.id = this.users.length + 1;
         this.users.push(user);
         localStorage.setItem('users', JSON.stringify(this.users));
 

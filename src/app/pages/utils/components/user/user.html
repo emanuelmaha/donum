@@ -1,0 +1,35 @@
+<div class="list-members horizontal-scroll">
+    <ba-card cardTitle="List of User">
+      <form>
+        <table class="table table-hover">
+          <thead>
+            <tr class="black-muted-bg">
+              <th class="col-member">Name</th>
+              <th class="col-member">Username</th>
+              <th class="col-phone">Email</th>
+              <th class="col-phone">Permission</th>
+              <th class="col-phone">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr class="no-top-border" *ngFor="let userLogin of users">
+                <td>{{userLogin.name}}</td>
+                <td>{{userLogin.username}}</td>
+                <td>{{userLogin.email}}</td>
+                <td>
+                  {{userLogin.permission}}
+                  <select type="number" name="{{userLogin.username}}Permission" [(ngModel)]="userLogin.permission" 
+                  (ngModelChange)="changePermission(userLogin)">
+                    <option *ngFor="let permission of permissionSelect" [ngValue]="permission.value">{{permission.name}} {{permission.value |json}}</option>
+                  </select>
+                </td>
+                <td>
+                  <b class="fa fa-remove" title="Remove user" (click)="removeUser(userLogin)"></b>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+      </form>
+    </ba-card>
+    <alert></alert>
+  </div>

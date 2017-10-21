@@ -1,4 +1,4 @@
-﻿import { RxCollection,RxDocument } from 'rxdb';
+﻿import { RxCollection, RxDocument } from 'rxdb';
 
 declare interface IMember {
     firstName?: string;

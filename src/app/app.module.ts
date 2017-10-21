@@ -15,27 +15,9 @@ import { GlobalState } from './global.state';
 import { NgaModule } from './theme/nga.module';
 import { PagesModule } from './pages/pages.module';
 import { DatabaseService } from './db/services/database.service';
+import { AuthGuard, AdminGuard, UserGuard } from 'app/_guards';
+import { AlertService, AlertModule } from 'app/_helpers/alert';
 
-// used to create backend
-// import { BackendProvider } from './_helpers/index';
-// import { MockBackend, MockConnection } from '@angular/http/testing';
-// import { BaseRequestOptions } from '@angular/http';
-// import { EndPoint } from './_helpers/endPoint';
-// // map of directives and guards
-// import { AuthGuard } from './_guards/index';
-// // database services
-// import { DatabaseService } from './db/services/database.service';
-// // routing 
-// // services 
-// import { AuthenticationService, UserService } from './_services/index';
-// used for geting view of the app
-// import { MenuComponent } from './views/menu/index';
-// import { HomeComponent } from './views/home/index';
-// import { ListMemberComponent, AddMemberComponent, EditMemberComponent} from './views/member/index';
-// import { RegisterComponent } from './views/register/index';
-// import { LoginComponent } from './views/login/login.component';
-
-// Application wide providers
 const APP_PROVIDERS = [
     AppState,
     GlobalState,
@@ -61,12 +43,17 @@ export type StoreType = {
         ReactiveFormsModule,
         NgaModule.forRoot(),
         NgbModule.forRoot(),
+        AlertModule,
         PagesModule,
         routing,
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
         APP_PROVIDERS,
-        DatabaseService
+        DatabaseService,
+        AlertService,
+        UserGuard,
+        AdminGuard,
+        AuthGuard
     ],
 })
 

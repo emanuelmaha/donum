@@ -5,9 +5,9 @@ import { NgaModule } from '../../theme/nga.module';
 import { NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { routing } from './utils.routing';
 import { AlertModule, AlertService } from '../../_helpers/alert/'
-import { MigrationComponent } from './components';
+import { MigrationComponent, UserComponent } from './components';
 import { UtilsComponent } from './utils.component';
-import {NgxElectronModule} from 'ngx-electron';
+import { NgxElectronModule } from 'ngx-electron';
 
 @NgModule({
   imports: [
@@ -21,7 +21,8 @@ import {NgxElectronModule} from 'ngx-electron';
   ],
   declarations: [
     UtilsComponent,
-    MigrationComponent
+    MigrationComponent,
+    UserComponent
   ],
   providers: [AlertService]
 })

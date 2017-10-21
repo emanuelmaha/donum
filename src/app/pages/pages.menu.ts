@@ -1,3 +1,5 @@
+import { AuthGuard, AdminGuard, UserGuard } from '../_guards/index';
+
 export const PAGES_MENU = [
   {
     path: 'pages',
@@ -13,6 +15,7 @@ export const PAGES_MENU = [
             order: 0,
           },
         },
+        hasPermission: UserGuard.IsUser()
       },
       {
         path: 'member',
@@ -43,6 +46,7 @@ export const PAGES_MENU = [
             },
           },
         ],
+        hasPermission: UserGuard.IsUser(),
       },
       {
         path: 'finance',
@@ -73,6 +77,7 @@ export const PAGES_MENU = [
             },
           },
         ],
+        hasPermission: UserGuard.IsUser(),
       },
       {
         path: 'utils',
@@ -93,21 +98,30 @@ export const PAGES_MENU = [
                 title: 'Data Base Migration',
               },
             },
+          },
+          {
+            path: 'user',
+            data: {
+              menu: {
+                title: 'Donum users',
+              },
+            },
           }
         ],
-      },
-      {
-        path: 'logout',
-        data: {
-          menu: {
-            title: 'Logout',
-            icon: 'ion-android-exit',
-            selected: false,
-            expanded: false,
-            order: 0,
-          },
-        },
+        hasPermission: AdminGuard.isAdmin()
       },
     ],
+  },
+  {
+    path: 'logout',
+    data: {
+      menu: {
+        title: 'Logout',
+        icon: 'ion-android-exit',
+        selected: false,
+        expanded: false,
+        order: 0,
+      },
+    },
   },
 ];

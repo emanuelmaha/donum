@@ -22,7 +22,19 @@ export class BaMenuService {
     this.menuItems.next(convertedRoutes);
   }
 
-  public convertRoutesToMenus(routes:Routes):any[] {
+  public convertRoutesToMenus(routes:any):any[] {
+    routes.forEach((route) => {
+      let children = [];
+      if(route && route.children){
+        route.children.forEach((child)=> {
+          if(child.hasPermission){
+            children.push(child);
+          }
+        });
+        route.children = children;
+      }
+    });
+
     let items = this._convertArrayToItems(routes);
     return this._skipEmpty(items);
   }

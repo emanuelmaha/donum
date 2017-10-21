@@ -2,27 +2,62 @@
 import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
+import { DatabaseService } from 'app/db/services/database.service';
+import { RxDonumDatabase } from 'app/db/RxDB';
+import { UserPermission, User } from 'app/_models';
+import { Md5 } from 'ts-md5/dist/md5';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private http: Http) { }
+    private db: RxDonumDatabase;
+
+    constructor(private http: Http,
+        private databaseService: DatabaseService,
+        private router: Router,
+    ) {
+        this.getDBData();
+    }
+
+    private async getDBData() {
+        this.db = await this.databaseService.get();
+    }
 
     login(username: string, password: string) {
-        return this.http.post('/api/user/login', JSON.stringify({ username: username, password: password }))
-            .map((response: Response) => {
-                console.log(response);
-                // login successful if there's a jwt token in the response
-                let user = response.json();
-                if (user) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
-                    console.log(localStorage.getItem('currentUser'));
+        this.db.user.findOne({ username: { $eq: username }, password: { $eq: Md5.hashStr(password) } }).exec().then(
+            (result: User) => {
+                if (result) {
+                    this.setCurrentUser(result);
+                    this.router.navigate(['/pages/dashbord']);
                 }
-            });
+            }
+        )
     }
 
     logout() {
-        // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
+    }
+
+    async register(name: string, username: string, email: string, password: string):Promise<any> {
+        let has = UserPermission.NotAccepted;
+
+        let user = this.db.user.newDocument({
+            username: username,
+            password: Md5.hashStr(password),
+            name: name,
+            email: email,
+            permission: UserPermission.NotAccepted
+        });
+        await user.save().then((resp) => {
+            this.setCurrentUser(user);
+            return true;
+          }).catch((error) => {
+              return error;
+          });;
+    }
+
+    setCurrentUser(user: User) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('lastLogin', new Date().getTime().toString());
     }
 }

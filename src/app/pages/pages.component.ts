@@ -15,9 +15,8 @@ import { PAGES_MENU } from './pages.menu';
       </div>
     </div>
     <footer class="al-footer clearfix">
-      <div class="al-footer-right">Created with <i class="ion-heart"></i></div>
-      <div class="al-footer-main clearfix">
-        <div class="al-copy">&copy; Emanuel Mahalean 2017</div>
+      <div class="al-footer-right">
+      <div class="al-copy">Created with <i class="ion-heart"></i> by &copy; Emanuel Mahalean 2017</div>
       </div>
     </footer>
     <ba-back-top position="200"></ba-back-top>

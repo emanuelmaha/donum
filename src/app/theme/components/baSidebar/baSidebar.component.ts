@@ -11,12 +11,15 @@ export class BaSidebar {
   public menuHeight: number;
   public isMenuCollapsed: boolean = false;
   public isMenuShouldCollapsed: boolean = false;
-
+  username: string;
   constructor(private _elementRef: ElementRef, private _state: GlobalState) {
 
     this._state.subscribe('menu.isCollapsed', (isCollapsed) => {
       this.isMenuCollapsed = isCollapsed;
     });
+
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    this.username = user.name
   }
 
   public ngOnInit(): void {

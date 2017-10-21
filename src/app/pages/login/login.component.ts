@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { DatabaseService } from '../../db/services/database.service';
+import { RxDonumDatabase } from 'app/db/RxDB';
+import { AlertService, AlertType } from '../../_helpers/alert/';
+import { AuthenticationService } from 'app/_services';
 
 @Component({
   selector: 'login',
@@ -9,24 +13,29 @@ import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/fo
 export class Login {
 
   public form: FormGroup;
-  public email: AbstractControl;
+  public username: AbstractControl;
   public password: AbstractControl;
   public submitted: boolean = false;
 
-  constructor(fb: FormBuilder) {
+  constructor(
+    fb: FormBuilder,
+    private alert: AlertService,
+    private auth: AuthenticationService) {
     this.form = fb.group({
-      'email': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+      'username': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
       'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
     });
 
-    this.email = this.form.controls['email'];
+    this.username = this.form.controls['username'];
     this.password = this.form.controls['password'];
   }
+
+
 
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
-      // your code goes here
+      this.auth.login(this.username.value, this.password.value);
     }
   }
 }

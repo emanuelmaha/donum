@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { UtilsComponent } from './utils.component';
-import { MigrationComponent } from './components';
+import { MigrationComponent, UserComponent } from './components';
 
 const routes: Routes = [
   {
@@ -9,6 +9,7 @@ const routes: Routes = [
     component: UtilsComponent,
     children: [
       { path: 'migration', component: MigrationComponent },
+      { path: 'user', component: UserComponent },
     ],
   },
 ];

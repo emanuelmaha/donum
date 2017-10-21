@@ -3,25 +3,23 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 
-import { Login } from './login.component';
-import { routing } from './login.routing';
+import { Register } from './register.component';
+import { routing } from './register.routing';
+import { AuthenticationService } from 'app/_services';
+import { AlertService } from 'app/_helpers/alert';
 
-import { AlertService, AlertModule } from '../../_helpers/alert/';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    AlertModule,
     NgaModule,
-    routing,
+    routing
   ],
   declarations: [
-    Login,
+    Register
   ],
-  providers:[AlertService]
+  providers:[AuthenticationService,AlertService]
 })
-export class LoginModule {
-
-}
+export class RegisterModule { }

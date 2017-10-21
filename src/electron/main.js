@@ -3,7 +3,7 @@ const electron = require('electron')
 const fs = require('fs');
 
 // Module to control application life.
-var {app, BrowserWindow, ipcMain} = electron; 
+var { app, BrowserWindow, ipcMain } = electron;
 
 const path = require('path')
 const url = require('url')
@@ -15,6 +15,12 @@ let mainWindow
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 1200, height: 900 })
+console.log(url.format({
+  pathname: path.join(__dirname, 'index.html'),
+  protocol: 'file:',
+  slashes: true
+}));
+console.log(__dirname)
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -58,24 +64,27 @@ app.on('activate', function () {
 })
 
 
-ipcMain.on('saveExport', (event, arg) => {
-  
-  // dialog.showSaveDialog((fileName) => {
-  //   if (fileName === undefined){
-  //       console.log("You didn't save the file");
-  //       return;
-  //   }
+ipcMain.on('exportDatabase', (event, json) => {
+  var time = new Date();
+  fs.writeFile('database/migration/export_' + time.getTime() + '.json', json, (err) => {
+    if (err) {
+      event.returnValue = "An error ocurred creating the file " + err.message
+    }
 
-    // fileName is a string that contains the path and filename created in the save file dialog.  
-    fs.writeFile('C:\\documents\test.txt', arg, (err) => {
-        if(err){
-          console.log("An error ocurred creating the file "+ err.message)
-        }
-                    
-        console.log("The file has been succesfully saved");
-    });
-// }); 
-  event.returnValue = 'pong'
+    event.returnValue = "The file has been succesfully saved";
+  });
 })
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+
+ipcMain.on('importDatabase', (event, filename) => {
+
+  try {
+    fs.readFile('database/migration/' + filename, 'utf8', (err, data) => {
+      if (err) {
+        event.returnValue = "An error ocurred reading the file! " + err.message
+      }
+      event.returnValue = data;
+    });
+  } catch(err) {
+    event.returnValue = "An error ocuured trying to open an file! " + err.message;
+  }
+})

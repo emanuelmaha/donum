@@ -17,12 +17,11 @@
         "email": {
             "type": "string"
         },
-        "id": {
-            "type": "number"
-        },
-        "permision": {
-            "type": "string"
+        "permission": {
+            "type": "number",
+            "enum": [
+                0,1,2,3
+            ]
         }
-    },
-    "required": ["username", "password","id"]
+    }
 }

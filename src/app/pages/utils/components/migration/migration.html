@@ -4,8 +4,8 @@
     </ba-card>
     
     <ba-card cardTitle="Import Database" baCardClass="with-scroll" class="smart-table-container">
-        <input type="file" value="Please choose a file"/>
-        <button class="btn btn-sm">Import</button>
+        <input type="file" value="Please choose a file" #fileImport/>
+        <button class="btn btn-sm" (click)="import(fileImport.files)">Import</button>
     </ba-card>
     
 </div>

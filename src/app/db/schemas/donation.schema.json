@@ -8,7 +8,8 @@
             "type": "number"
         },
         "memberId": {
-            "type":"string"
+            "type":"string",
+            "index": true
         },
         "memberName": {
             "type": "string",
