@@ -6,14 +6,15 @@ import { DonationView, MemberView } from '../modelView/'
 
 export class PdfWriter {
 
-    static buildReportAll(doc: jsPDF, reportFor: string, startDate: Date, endDate: Date, donations: IDonation[]) {
+    static buildReportAll(doc: jsPDF, startDate: Date, endDate: Date, donations: IDonation[]) {
         donations = DonationView.GroupDonationByMemberName(donations);
         PdfWriter.writeHeader(doc);
-        PdfWriter.writeReportTitle(doc, 'All Members', startDate, endDate)
-        PdfWriter.writeTableAll(doc);
-        let lineX = PdfWriter.writeDonationsAll(doc, donations);
-        PdfWriter.writeTotalAmount(doc, DonationView.GetToatalDonation(donations), lineX)
         PdfWriter.writeFooter(doc);
+        let lineY = 55
+        lineY = PdfWriter.writeReportTitle(doc, 'All Members', startDate, endDate, lineY)
+        lineY = PdfWriter.writeTableHeaderAll(doc, lineY);
+        lineY = PdfWriter.writeDonationsAll(doc, donations, lineY);
+        PdfWriter.writeTotalAmount(doc, DonationView.GetToatalDonation(donations), lineY)
     }
 
     static buildReportMembers(doc: jsPDF, startDate: Date, endDate: Date, members: MemberView[]) {
@@ -30,11 +31,13 @@ export class PdfWriter {
         forMembers = forMembers.slice(0, -2);
 
         PdfWriter.writeHeader(doc);
-        PdfWriter.writeReportTitle(doc, forMembers, startDate, endDate);
-        PdfWriter.writeTableMember(doc);
-        let lineY = PdfWriter.writeDonationsMember(doc, members);
-        PdfWriter.writeTotalAmount(doc, DonationView.GetToatalDonation(donationsAll), lineY);
         PdfWriter.writeFooter(doc);
+
+        let lineY = 55
+        lineY = PdfWriter.writeReportTitle(doc, forMembers, startDate, endDate, lineY, members);
+        lineY = PdfWriter.writeTableHeader(doc, lineY);
+        lineY = PdfWriter.writeDonationsMember(doc, members, lineY);
+        PdfWriter.writeTotalAmount(doc, DonationView.GetToatalDonation(donationsAll), lineY);
     }
 
     static writeFooter(doc: jsPDF) {
@@ -51,30 +54,48 @@ export class PdfWriter {
         doc.text('Pastor, Vasile Streango', 160, 28);
     }
 
-    static writeReportTitle(doc: jsPDF, reportFor: string, startDate: Date, endDate: Date) {
+    static writeReportTitle(doc: jsPDF, reportFor: string, startDate: Date, endDate: Date, lineY:number, members: MemberView[] = null):number {
+
+
         doc.setFontSize(16);
-        doc.text('Donation Report', 90, 35);
+        doc.text('Donation Report', 90, lineY);
         doc.setFontSize(14);
-        doc.text('For: ' + reportFor, 20, 45);
+        doc.text('For: ' + reportFor, 20, lineY += 15);
         doc.setFontSize(12);
-        doc.text('Report Date: ' + DateUtil.getUSDateFormat(startDate) + ' through ' + DateUtil.getUSDateFormat(endDate), 20, 50)
-        doc.text('Date: ' + DateUtil.getUSDateFormat(), 20, 55)
+
+        if(members){
+            let address;
+            members.forEach( (member)=> {
+                if(member.address != ''){
+                    address = member.address;
+                    return;
+                }
+            });
+            doc.text('Address: ' + address, 20, lineY += 5)
+        }
+
+        doc.text('Report Date: ' + DateUtil.getUSDateFormat(startDate) + ' through ' + DateUtil.getUSDateFormat(endDate), 20,  lineY += 5)
+        doc.text('Date: ' + DateUtil.getUSDateFormat(), 20,  lineY += 5)
+
+        return lineY
     }
 
-    static writeTableAll(doc: jsPDF) {
+    static writeTableHeaderAll(doc: jsPDF, lineY): number {
         doc.setLineWidth(1)
-        doc.line(5, 60, 205, 60);
+        doc.line(5, lineY + 5, 205, lineY + 5);
         doc.setFontSize(14);
-        doc.text('Name', 20, 66);
-        doc.text('Amount', 100, 66);
+        doc.text('Name', 20, lineY += 12);
+        doc.text('Amount', 100, lineY);
         doc.setLineWidth(0.5)
-        doc.line(5, 69, 205, 69);
+        doc.line(5, lineY + 3, 205, lineY + 3);
+        
+        return lineY
     }
 
-    static writeDonationsAll(doc: jsPDF, donations: IDonation[]): any {
+    static writeDonationsAll(doc: jsPDF, donations: IDonation[], lineY): number {
         doc.setFontSize(12)
-        let lineY = 75;
         let index = 1;
+        lineY += 10
         for (let donation of donations) {
             doc.text(index.toString(), 10, lineY);
             doc.text(donation.memberName.toString(), 20, lineY)
@@ -83,34 +104,37 @@ export class PdfWriter {
             index += 1;
             if (lineY > 270) {
                 doc.addPage();
+                lineY = 40;
+                lineY = PdfWriter.writeTableHeaderAll(doc, lineY);
                 PdfWriter.writeHeader(doc);
                 PdfWriter.writeFooter(doc)
-                lineY = 40;
+                lineY += 13                
             }
         }
         return lineY
     }
 
-    static writeTableMember(doc: jsPDF) {
+    static writeTableHeader(doc: jsPDF, lineY: number):number {
         doc.setLineWidth(1)
-        doc.line(5, 60, 205, 60);
+        doc.line(5, lineY + 5, 205, lineY + 5);
         doc.setFontSize(14);
-        doc.text('Num', 40, 66);
-        doc.text('Date', 60, 66);
-        doc.text('Memo', 85, 66);
-        doc.text('Check', 150, 66);
-        doc.text('Amount', 175, 66);
+        doc.text('Num', 40, lineY += 12);
+        doc.text('Date', 60, lineY );
+        doc.text('Memo', 85, lineY);
+        doc.text('Check', 150, lineY);
+        doc.text('Amount', 175, lineY);
         doc.setLineWidth(0.5)
-        doc.line(5, 69, 205, 69);
+        doc.line(5, lineY + 3, 205, lineY + 3);
+
+        return lineY        
     }
 
-    static writeDonationsMember(doc: jsPDF, members: MemberView[]): any {
+    static writeDonationsMember(doc: jsPDF, members: MemberView[], lineY:number): number {
         doc.setFontSize(12)
-        let lineY = 75;
         let index = 1;
         for (let member of members) {
             if (Array.isArray(member.donations) && member.donations.length > 0) {
-                doc.text(member.getFullName(), 10, lineY);
+                doc.text(member.getFullName(), 10, lineY += 10);
                 lineY += 7
                 for (let donation of member.donations) {
                     doc.text(donation.id.toString(), 40, lineY)
@@ -122,9 +146,11 @@ export class PdfWriter {
                     index += 1;
                     if (lineY > 270) {
                         doc.addPage();
+                        lineY = 40;
+                        lineY = PdfWriter.writeTableHeader(doc, lineY);
                         PdfWriter.writeHeader(doc);
                         PdfWriter.writeFooter(doc)
-                        lineY = 40;
+                        lineY += 13
                     }
                 }
             }
@@ -136,7 +162,7 @@ export class PdfWriter {
         doc.setLineWidth(0.5)
         doc.line(5, lineY - 5, 205, lineY - 5);
         doc.setFontSize(14);
-        doc.text('Total Amount: ' + totalAmount + ' $', 100, lineY + 4)
+        doc.text('Total Amount: ' + totalAmount + ' $', 130, lineY + 4)
     }
 
 }

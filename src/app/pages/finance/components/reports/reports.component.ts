@@ -82,7 +82,7 @@ export class ReportsComponent implements OnDestroy {
           for (let donation of donations) {
             this.donations.push(donation.toJSON());
           }
-          if (type == 'All') {
+          if (type == 'all') {
             this.buildReportAll();
           } else {
             this.buildReportMember();
@@ -112,7 +112,7 @@ export class ReportsComponent implements OnDestroy {
   private buildReportAll(): void {
     let today = DateUtil.getUSDateFormat();
     var doc = new jsPDF();
-    PdfWriter.buildReportAll(doc, 'All Members', this.dateStartMemb, this.dateEndMemb, this.donations);
+    PdfWriter.buildReportAll(doc, this.dateStartMemb, this.dateEndMemb, this.donations);
     doc.save('DonationReport_AllMember_' + today + '.pdf');
   }
 

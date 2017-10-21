@@ -30,8 +30,6 @@ export class Login {
     this.password = this.form.controls['password'];
   }
 
-
-
   public onSubmit(values: Object): void {
     this.submitted = true;
     if (this.form.valid) {
