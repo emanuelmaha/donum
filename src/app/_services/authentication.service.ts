@@ -28,7 +28,7 @@ export class AuthenticationService {
             (result: User) => {
                 if (result) {
                     this.setCurrentUser(result);
-                    this.router.navigate(['/pages/dashbord']);
+                    this.router.navigate(['/pages/dashboard']);
                 }
             }
         )
@@ -38,7 +38,7 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
     }
 
-    async register(name: string, username: string, email: string, password: string):Promise<any> {
+    async register(name: string, username: string, email: string, password: string): Promise<any> {
         let has = UserPermission.NotAccepted;
 
         let user = this.db.user.newDocument({
@@ -49,15 +49,22 @@ export class AuthenticationService {
             permission: UserPermission.NotAccepted
         });
         await user.save().then((resp) => {
-            this.setCurrentUser(user);
             return true;
-          }).catch((error) => {
-              return error;
-          });;
+        }).catch((error) => {
+            throw error;
+        });
     }
 
     setCurrentUser(user: User) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         localStorage.setItem('lastLogin', new Date().getTime().toString());
+    }
+
+    static getCurrentUser(): User {
+        let user = <User>JSON.parse(localStorage.getItem('currentUser'))
+        if (user) {
+            return user;
+        }
+        return null;
     }
 }

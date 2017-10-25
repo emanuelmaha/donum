@@ -8,7 +8,7 @@ export class AdminGuard implements CanActivate {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (AdminGuard.isAdmin) {
+        if (AdminGuard.isAdmin()) {
             return true;
         }
         this.router.navigate(['/pages']);

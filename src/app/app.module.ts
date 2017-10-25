@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { routing } from './app.routing';
 
 // App is our top level component
@@ -17,17 +16,18 @@ import { PagesModule } from './pages/pages.module';
 import { DatabaseService } from './db/services/database.service';
 import { AuthGuard, AdminGuard, UserGuard } from 'app/_guards';
 import { AlertService, AlertModule } from 'app/_helpers/alert';
+import { LoginModule } from 'app/pages/login/login.module';
+import { RegisterModule } from 'app/pages/register/register.module';
 
 const APP_PROVIDERS = [
     AppState,
     GlobalState,
+    DatabaseService,
+    AlertService,
+    UserGuard,
+    AdminGuard,
+    AuthGuard
 ];
-
-export type StoreType = {
-    state: InternalStateType,
-    restoreInputValues: () => void,
-    disposeOldHosts: () => void,
-};
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -44,16 +44,13 @@ export type StoreType = {
         NgaModule.forRoot(),
         NgbModule.forRoot(),
         AlertModule,
+        LoginModule,
+        RegisterModule,
         PagesModule,
         routing,
     ],
     providers: [ // expose our Services and Providers into Angular's dependency injection
-        APP_PROVIDERS,
-        DatabaseService,
-        AlertService,
-        UserGuard,
-        AdminGuard,
-        AuthGuard
+        APP_PROVIDERS
     ],
 })
 

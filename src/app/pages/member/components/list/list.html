@@ -28,7 +28,7 @@
               <td class="table-arr">
                 <b class="fa ion-cash" title="Donations" (click)=donation(member._id)></b>
                 <b class="fa fa-edit" title="Edit Member" (click)=editMember(member._id)></b>
-                <b class="fa fa-remove" title="Remove Member" (click)="removeMember(member._rev)"></b>
+                <b class="fa fa-remove" title="Remove Member" (click)="removeMember(member._id)"></b>
               </td>
             </tr>
             <tr *ngIf="member.expanded">

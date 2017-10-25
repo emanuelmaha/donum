@@ -96,7 +96,7 @@ export class DonationComponent {
   }
 
   delete(event): void {
-    let sub = this.alert.showAlert('Are you sure you want to delete this user?', AlertType.Warrning, true).subscribe(
+    let sub = this.alert.showAlert('Are you sure you want to delete this donation?', AlertType.Warrning, true).subscribe(
       (resp) => {
         if (resp) {
           let query = this.db.donation.findOne().where("_rev").eq(event.data._rev);

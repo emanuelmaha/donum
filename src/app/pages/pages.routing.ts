@@ -2,20 +2,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { Pages } from './pages.component';
 import { ModuleWithProviders } from '@angular/core';
 import { AuthGuard, AdminGuard, UserGuard} from '../_guards/index';
-import { WaitForApprove } from 'app/pages/waitForApprove/waitForApprove.component';
-import { Logout } from 'app/pages/logout/logout.component';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    loadChildren: 'app/pages/login/login.module#LoginModule',
-  },
-  {
-    path: 'register',
-    loadChildren: 'app/pages/register/register.module#RegisterModule'
-  },
-  { path: 'waitForApprove', component: WaitForApprove},
-  { path: 'logout', component: Logout },
   {
     path: 'pages',
     component: Pages,
@@ -24,7 +12,7 @@ export const routes: Routes = [
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'member', loadChildren: './member/member.module#MemberModule', canActivate:[UserGuard] },
       { path: 'finance', loadChildren: './finance/finance.module#FinanceModule', canActivate:[UserGuard] },
-      { path: 'utils', loadChildren: './utils/utils.module#UtilsModule', canActivate: [AdminGuard] },
+      { path: 'utils', loadChildren: './utils/utils.module#UtilsModule', canActivate:[AdminGuard] },
     ],
     canActivate: [AuthGuard]
   },

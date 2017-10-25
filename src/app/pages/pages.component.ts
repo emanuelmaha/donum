@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { BaMenuService } from '../theme';
-import { PAGES_MENU } from './pages.menu';
+import { PageMenu } from './pages.menu';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'pages',
@@ -22,12 +23,16 @@ import { PAGES_MENU } from './pages.menu';
     <ba-back-top position="200"></ba-back-top>
     `
 })
-export class Pages {
-
+export class Pages implements OnInit,OnDestroy {
+  
   constructor(private _menuService: BaMenuService,) {
   }
-
+  
   ngOnInit() {
-    this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+    this._menuService.updateMenuByRoutes(<Routes>PageMenu.getPageMenu());
+  }
+
+  ngOnDestroy(): void {
+    this._menuService.menuItems = new BehaviorSubject<any[]>([]);;
   }
 }

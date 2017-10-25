@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy } from '@angular/core';
 import { AuthGuard } from '../../_guards/index';
 import { AuthenticationService } from 'app/_services';
 
@@ -7,13 +7,24 @@ import { AuthenticationService } from 'app/_services';
   templateUrl: './logout.html',
   styleUrls: ['../login/login.scss']
 })
-export class Logout {
-
+export class Logout implements AfterViewInit,OnDestroy{
+  timeoutId:any;
   constructor(private auth: AuthenticationService) {
     this.logout();
   }
 
+  ngAfterViewInit(): void {
+    this.timeoutId = setTimeout( function()
+    {
+      location.reload();
+    }, 5000);
+  }
+
   public logout(): void {
     this.auth.logout();
+  }
+
+  ngOnDestroy(): void {
+    clearTimeout(this.timeoutId)
   }
 }

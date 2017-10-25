@@ -33,7 +33,7 @@ export class DatabaseService {
     static dbPromise: Promise<RxDBTypes.RxDonumDatabase> = null;
 
     private async _create(): Promise<RxDBTypes.RxDonumDatabase> {
-        const db: RxDBTypes.RxDonumDatabase = <RxDBTypes.RxDonumDatabase> await RxDB.create({
+        const db: RxDBTypes.RxDonumDatabase = <RxDBTypes.RxDonumDatabase>await RxDB.create({
             name: 'domnu',
             adapter: useAdapter,
             // password: 'myLongAndStupidPassword' // no password needed
@@ -62,6 +62,16 @@ export class DatabaseService {
                 .then(has => {
                     if (has != null) {
                         throw new Error('Already existing member ' + firstName + ' ' + lastName);
+                    }
+                    return db;
+                });
+        });
+        db.collections.user.preInsert(function (docObj) {
+            const username = docObj.username;
+            return db.collections.user.findOne({ username }).exec()
+                .then(has => {
+                    if (has != null) {
+                        throw new Error('Already existing user with ' + username);
                     }
                     return db;
                 });

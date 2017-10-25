@@ -44,21 +44,17 @@ export class Register {
     this.passwords = <FormGroup>this.form.controls['passwords'];
     this.password = this.passwords.controls['password'];
     this.repeatPassword = this.passwords.controls['repeatPassword'];
-
   }
 
   public async onSubmit(values: Object) {
     this.submitted = true;
     if (this.form.valid) {
       await this.auth.register(this.name.value, this.username.value, this.email.value, this.password.value)
-      .then((resp)=> {
-        if (resp === true){
-          this.router.navigate(['/pages/dashbord']);          
-        } else {
-          this.alert.showAlert('An error occure trying to save the member, please check the fileds and try again: ' + resp, AlertType.Error);
-        }
-      })
-
+        .then((resp) => {
+          this.router.navigate(['waitForApprove']);
+        }).catch((error) => {
+          this.alert.showAlert('An error occure trying to save the user, please check the fileds and try again: ' + error, AlertType.Error);
+        });
     }
   }
 }

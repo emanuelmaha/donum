@@ -5,6 +5,7 @@ import { DatabaseService } from '../../../../db/services/database.service';
 import { RxDonumDatabase } from 'app/db/RxDB';
 import { AlertService, AlertType } from '../../../../_helpers/alert/';
 import { UserPermission } from 'app/_models/user';
+import { AuthenticationService } from 'app/_services';
 
 
 @Component({
@@ -30,7 +31,9 @@ export class UserComponent implements OnInit {
     async getUsers() {
         this.db = await this.databaseService.get();
         this.db.user.find().exec().then(users => {
-            this.users = users;
+            if (Array.isArray(users)) {
+                this.users = users.filter(u => u.username != AuthenticationService.getCurrentUser().username && u.permission != UserPermission.SuperAdmin);
+            }
         });
     }
 
@@ -45,6 +48,9 @@ export class UserComponent implements OnInit {
             (resp) => {
                 if (resp) {
                     user.remove();
+                    if (Array.isArray(this.users)) {
+                        this.users = this.users.filter(u => u.username != user.username);
+                    }
                     sub.unsubscribe();
                 }
             }

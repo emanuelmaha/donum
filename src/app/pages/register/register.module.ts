@@ -6,7 +6,7 @@ import { NgaModule } from '../../theme/nga.module';
 import { Register } from './register.component';
 import { routing } from './register.routing';
 import { AuthenticationService } from 'app/_services';
-import { AlertService } from 'app/_helpers/alert';
+import { AlertService, AlertModule } from 'app/_helpers/alert';
 
 
 @NgModule({
@@ -15,6 +15,7 @@ import { AlertService } from 'app/_helpers/alert';
     ReactiveFormsModule,
     FormsModule,
     NgaModule,
+    AlertModule,
     routing
   ],
   declarations: [

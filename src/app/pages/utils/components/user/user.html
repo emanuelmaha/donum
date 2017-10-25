@@ -19,7 +19,7 @@
                 <td>
                   <select type="number" name="{{userLogin.username}}Permission" [(ngModel)]="userLogin.permission" 
                   (ngModelChange)="changePermission(userLogin)">
-                    <option *ngFor="let permission of permissionSelect" [ngValue]="permission.value">{{permission.name}} {{permission.value |json}}</option>
+                    <option *ngFor="let permission of permissionSelect" [ngValue]="permission.value">{{permission.name}}</option>
                   </select>
                 </td>
                 <td>

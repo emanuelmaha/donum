@@ -5,6 +5,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { DatabaseService } from '../../../../db/services/database.service';
 import { AlertService, AlertType } from '../../../../_helpers/alert/';
 import { RxDonumDatabase } from 'app/db/RxDB';
+import { RxDocument } from 'rxdb';
 
 @Component({
   selector: 'list',
@@ -17,7 +18,6 @@ export class ListComponent {
   membersData: Member[] | Member;
   searchBy: string = '';
   db: RxDonumDatabase;
-  sub;
 
   constructor(
     private router: Router,
@@ -32,8 +32,7 @@ export class ListComponent {
 
   private async _show() {
     this.db = await this.databaseService.get();
-    const members$ = this.db.member.find().$;
-    this.sub = members$.subscribe(members => {
+    this.db.member.find().exec().then(members => {
       this.membersData = members;
       if (this.route.snapshot.queryParams['memberName']) {
         this.searchBy = JSON.parse(this.route.snapshot.queryParams['memberName']);
@@ -41,8 +40,6 @@ export class ListComponent {
       } else {
         this.members = members;
       }
-      this.sub.unsubscribe();
-      this.zone.run(() => { });
     });
   }
 
@@ -58,8 +55,10 @@ export class ListComponent {
     let sub = this.alert.showAlert('Are you sure you want to delete this memeber?', AlertType.Warrning, true).subscribe(
       (resp) => {
         if (resp) {
-          let query = this.db.member.findOne().where("_rev").eq(id);
+          let query = this.db.member.findOne().where("_id").eq(id);
           query.remove();
+          this.members = (<Member[]>this.members).filter((m: any) => m._id != id);
+          this.membersData = (<Member[]>this.membersData).filter((m: any) => m._id != id);
           sub.unsubscribe();
         }
       }

@@ -54,7 +54,7 @@ export class ReportsComponent implements OnDestroy {
   }
 
   selectMember(selected: any) {
-    if (selected && selected.originalObject) {
+    if (selected && selected.originalObject && this.membersView.filter(m => m._id == selected.originalObject._id).length == 0) {
       this.loading = true;
       let member = new MemberView()
       member.fromJson(selected.originalObject);
@@ -116,7 +116,7 @@ export class ReportsComponent implements OnDestroy {
     doc.save('DonationReport_AllMember_' + today + '.pdf');
   }
 
-   getDonations(member: MemberView) {
+  getDonations(member: MemberView) {
     this.db.donation.find({
       createdDate: {
         $gte: this.dateStartMemb.getTime(),
