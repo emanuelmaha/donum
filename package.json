@@ -8,7 +8,7 @@
     "pouchdb-server": "pouchdb-server -p 10101 -d /tmp/pouchdb-server/ -n true",
     "build-win": "electron-packager dist --platform win32 ",
     "package": "npm run build-electron && npm run build-win",
-    "start": "electron dist",
+    "start": "npm run build-electron && electron dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
