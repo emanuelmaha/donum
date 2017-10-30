@@ -26,8 +26,8 @@
         "email": {
             "type": "string"
         },
-        "phoneNumber": {
-            "type": "number"
+        "phone": {
+            "type": "string"
         },
         "id": {
             "type": "number"

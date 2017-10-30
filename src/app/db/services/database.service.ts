@@ -33,6 +33,7 @@ export class DatabaseService {
     static dbPromise: Promise<RxDBTypes.RxDonumDatabase> = null;
 
     private async _create(): Promise<RxDBTypes.RxDonumDatabase> {
+        localStorage.clear();        
         const db: RxDBTypes.RxDonumDatabase = <RxDBTypes.RxDonumDatabase>await RxDB.create({
             name: 'domnu',
             adapter: useAdapter,

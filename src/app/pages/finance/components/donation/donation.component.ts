@@ -142,9 +142,11 @@ export class DonationComponent {
     );
   }
 
-  async edit(event) {
-    let query = this.db.donation.findOne().where("_rev").eq(event.data._rev);
-    await query.update(event.newData);
+  edit(event) {
+    this.db.donation.findOne().where("_id").eq(event.data._id).exec()
+      .then((result: Donation) => {
+        result.update(event.newData);
+      });
     event.confirm.resolve();
   }
 

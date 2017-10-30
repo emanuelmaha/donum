@@ -9,7 +9,7 @@ export class UserService {
 
     private jwt(params = null) {
         // create authorization header with jwt token
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
 
         if (currentUser && currentUser.token) {
             let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });

@@ -16,7 +16,7 @@ export class AdminGuard implements CanActivate {
     }
 
     static isAdmin(): boolean {
-        let user = JSON.parse(localStorage.getItem('currentUser'));
+        let user = JSON.parse(sessionStorage.getItem('currentUser'));
         if (user && (user.permission == UserPermission.Admin || user.permission == UserPermission.SuperAdmin)) {
             return true;
         }

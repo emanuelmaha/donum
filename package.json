@@ -1,19 +1,18 @@
 {
   "name": "donum",
-  "version": "0.0.0",
-  "license": "MIT",
+  "version": "1.0.0",
+  "license": "EmanuelMahalean",
   "angular-cli": {},
   "scripts": {
     "build-electron": "ng build --base-href . && cp src/electron/* dist",
     "pouchdb-server": "pouchdb-server -p 10101 -d /tmp/pouchdb-server/ -n true",
-    "build-win": "electron-packager dist --platform win32 ",
+    "build-win": "electron-packager dist --platform win32 --overwrite --icon src/assets/img/icon_grpc.ico",
     "package": "npm run build-electron && npm run build-win",
     "start": "npm run build-electron && electron dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "run-browser": "concurrently \"npm run pouchdb-server\" \"ng serve\" ",
-    "run-electron": "concurrently \"npm run pouchdb-server\" \"npm run start\""
+    "run-browser": "concurrently \"npm run pouchdb-server\" \"ng serve\" "
   },
   "private": true,
   "dependencies": {
@@ -37,6 +36,7 @@
     "bootstrap": "4.0.0-alpha.6",
     "concurrently": "^3.5.0",
     "core-js": "^2.4.1",
+    "electron-debug": "^1.4.0",
     "font-awesome": "4.7.0",
     "fullcalendar": "3.3.1",
     "ionicons": "2.0.1",

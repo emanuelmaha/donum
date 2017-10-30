@@ -1,4 +1,4 @@
-import { Component, NgZone, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Member } from '../../../../_models';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -13,42 +13,27 @@ import { RxDocument } from 'rxdb';
   styleUrls: ['./list.scss']
 
 })
-export class ListComponent {
-  members: Member[] | Member;
-  membersData: Member[] | Member;
+export class ListComponent implements OnInit {
+
+  members: Member[] = [];
   searchBy: string = '';
   db: RxDonumDatabase;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private modalService: NgbModal,
-    private zone: NgZone,
     private databaseService: DatabaseService,
     private alert: AlertService,
-  ) {
-    this._show();
-  }
+  ) { }
 
-  private async _show() {
+  async ngOnInit() {
     this.db = await this.databaseService.get();
-    this.db.member.find().exec().then(members => {
-      this.membersData = members;
+    this.db.member.find().exec().then((members: Member[]) => {
+      this.members = members;
       if (this.route.snapshot.queryParams['memberName']) {
         this.searchBy = JSON.parse(this.route.snapshot.queryParams['memberName']);
-        this.searchMembers()
-      } else {
-        this.members = members;
       }
     });
-  }
-
-  searchMembers() {
-    if (Array.isArray(this.membersData)) {
-      this.members = this.membersData.filter(function (el) {
-        return el.firstName.concat(' ' + el.lastName).toLowerCase().indexOf(this.searchBy.toLowerCase()) > -1;
-      }.bind(this));
-    }
   }
 
   removeMember(id: string) {
@@ -57,8 +42,7 @@ export class ListComponent {
         if (resp) {
           let query = this.db.member.findOne().where("_id").eq(id);
           query.remove();
-          this.members = (<Member[]>this.members).filter((m: any) => m._id != id);
-          this.membersData = (<Member[]>this.membersData).filter((m: any) => m._id != id);
+          this.members = this.members.filter((m: any) => m._id != id);
           sub.unsubscribe();
         }
       }

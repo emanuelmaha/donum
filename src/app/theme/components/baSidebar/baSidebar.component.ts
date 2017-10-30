@@ -18,7 +18,7 @@ export class BaSidebar {
       this.isMenuCollapsed = isCollapsed;
     });
 
-    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let user = JSON.parse(sessionStorage.getItem('currentUser'));
     this.username = user.name
   }
 

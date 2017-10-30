@@ -1,7 +1,10 @@
-import {Component} from '@angular/core';
-import {BaThemeConfigProvider} from '../../../theme';
+import { Component } from '@angular/core';
+import { BaThemeConfigProvider } from '../../../theme';
 
-import {TodoService} from './todo.service';
+import { TodoService } from './todo.service';
+import { DatabaseService } from 'app/db/services/database.service';
+import { RxDonumDatabase } from 'app/db/RxDB';
+import { Note } from 'app/_models';
 
 @Component({
   selector: 'todo',
@@ -9,42 +12,42 @@ import {TodoService} from './todo.service';
   styleUrls: ['./todo.scss']
 })
 export class Todo {
-
+  db: RxDonumDatabase;
   public dashboardColors = this._baConfig.get().colors.dashboard;
 
-  public todoList:Array<any>;
-  public newTodoText:string = '';
+  public notes: Note[] = [];
+  public newTodoText: string = '';
 
-  constructor(private _baConfig:BaThemeConfigProvider, private _todoService:TodoService) {
-    this.todoList = this._todoService.getTodoList();
+  constructor(private _baConfig: BaThemeConfigProvider,
+    private _todoService: TodoService,
+    private databaseService: DatabaseService) {
+    this.getDBData();
+  }
+  private async getDBData() {
+    this.db = await this.databaseService.get();
 
-    this.todoList.forEach((item) => {
-      item.color = this._getRandomColor();
+    this.db.note.find().sort({createDate: -1}).exec().then(
+      (notes: Note[]) => {
+        this.notes = notes
+      });
+  }
+  removeNote(id: string) {
+    this.notes.filter((n: any) => n._id == id)[0].remove().then(() => {
+      this.notes = this.notes.filter((n: any) => n._id != id);
     });
   }
 
-  getNotDeleted() {
-    return this.todoList.filter((item:any) => {
-      return !item.deleted
-    })
-  }
-
-  addToDoItem($event) {
-
-    if (($event.which === 1 || $event.which === 13) && this.newTodoText.trim() != '') {
-
-      this.todoList.unshift({
-        text: this.newTodoText,
-        color: this._getRandomColor(),
-      });
+  addNote($event) {
+    if (this.newTodoText.trim() != '') {
+      let newNote = this.db.note.newDocument({ text: this.newTodoText, isDone: false, createDate: new Date().getTime().toString() });
+      newNote.save().then(() => {
+        this.notes.unshift (newNote);
+      })
       this.newTodoText = '';
     }
   }
 
-  private _getRandomColor() {
-    let colors = Object.keys(this.dashboardColors).map(key => this.dashboardColors[key]);
-
-    var i = Math.floor(Math.random() * (colors.length - 1));
-    return colors[i];
+  setDone(note: Note){
+    note.save();
   }
 }

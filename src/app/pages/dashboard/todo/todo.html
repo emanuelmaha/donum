@@ -1,19 +1,19 @@
 <div class="task-todo-container">
-  <input type="text" value="" class="form-control task-todo" placeholder="Task to do.." (keyup)="addToDoItem($event)" [(ngModel)]="newTodoText"/>
-  <i (click)="addToDoItem($event)" class="add-item-icon ion-plus-round"></i>
+  <input type="text" value="" class="form-control task-todo" placeholder="Task to do.." [(ngModel)]="newTodoText"/>
+  <i (click)="addNote()" class="add-item-icon ion-plus-round"></i>
   <div class="box-shadow-border"></div>
 
   <ul class="todo-list">
-    <li *ngFor="let item of getNotDeleted()" [ngClass]="{checked: item.isChecked, active: item.isActive}"
+    <li *ngFor="let item of notes" [ngClass]="{checked: item.isDone, active: item.isActive}"
         (mouseenter)="item.isActive=true" (mouseleave)="item.isActive=false">
 
       <div class="blur-container"><div class="blur-box"></div></div>
-      <i class="mark" [ngStyle]="{ 'background-color': item.color }"></i>
+      <i class="mark"></i>
       <label class="todo-checkbox custom-checkbox custom-input-success">
-        <input type="checkbox" [(ngModel)]="item.isChecked">
-        <span class="cut-with-dots">{{ item.text }}</span>
+        <input type="checkbox" [(ngModel)]="item.isDone" (ngModelChange)="setDone(item)">
+        <span class="cut-with-dots">{{item.text}}</span>
       </label>
-      <i class="remove-todo ion-ios-close-empty" (click)="item.deleted = true"></i>
+      <i class="remove-todo ion-ios-close-empty" (click)="removeNote(item._id)"></i>
     </li>
   </ul>
 </div>

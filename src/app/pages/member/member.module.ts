@@ -9,6 +9,7 @@ import { routing } from './member.routing';
 import { ListComponent, NewComponent } from './components';
 import { MemberComponent } from './member.component';
 import { AlertModule, AlertService } from '../../_helpers/alert/'
+import { FilterPipe } from 'app/util/filters';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { AlertModule, AlertService } from '../../_helpers/alert/'
     MemberComponent,
     ListComponent,
     NewComponent,
+    FilterPipe
   ],
   providers: [AlertService]  
 })

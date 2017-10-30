@@ -24,8 +24,8 @@ export class ReportsComponent implements OnDestroy {
   db: RxDonumDatabase;
   donations: Donation[] = [];
   sub: any;
-  dateStartMemb: Date = new Date("01/01/2017");
-  dateEndMemb: Date = new Date("12/30/2017");
+  dateStartMemb: Date = new Date("01/01/"+ new Date().getFullYear());
+  dateEndMemb: Date = new Date("12/31/"+ new Date().getFullYear());
   textNoResult = 'no member found';
 
   constructor(

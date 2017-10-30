@@ -35,7 +35,7 @@ export class AuthenticationService {
     }
 
     logout() {
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
     }
 
     async register(name: string, username: string, email: string, password: string): Promise<any> {
@@ -56,12 +56,12 @@ export class AuthenticationService {
     }
 
     setCurrentUser(user: User) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        localStorage.setItem('lastLogin', new Date().getTime().toString());
+        sessionStorage.setItem('currentUser', JSON.stringify(user));
+        sessionStorage.setItem('lastLogin', new Date().getTime().toString());
     }
 
     static getCurrentUser(): User {
-        let user = <User>JSON.parse(localStorage.getItem('currentUser'))
+        let user = <User>JSON.parse(sessionStorage.getItem('currentUser'))
         if (user) {
             return user;
         }

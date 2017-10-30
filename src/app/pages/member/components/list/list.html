@@ -3,8 +3,7 @@
     <form>
       <div class="form-group col-md-8 ">
         <label for="searchMember">Search Members</label>
-        <input class="form-control" id="searchMember" name="searchBy" [(ngModel)]="searchBy" (ngModelChange)="searchMembers()" placeholder="Member name"
-          type="text">
+        <input class="form-control" name="searchBy" [(ngModel)]="searchBy" placeholder="Member name" type="text">
       </div>
       <table class="table table-hover">
         <thead>
@@ -16,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let member of members">
+          <ng-container *ngFor="let member of (members | filter:['firstName','lastName']:searchBy) ">
             <tr class="no-top-border">
               <td>
                 <b class="fa" (click)="member.expanded=!member.expanded" [ngClass]="{'fa-angle-up': member.expanded, 'fa-angle-down': !member.expanded}"></b>

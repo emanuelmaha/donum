@@ -32,7 +32,7 @@ const APP_PROVIDERS = [
 @NgModule({
     bootstrap: [AppComponent],
     declarations: [
-        AppComponent,
+        AppComponent
     ],
     imports: [ // import Angular's modules
         BrowserAnimationsModule,
