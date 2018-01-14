@@ -34,23 +34,38 @@ export class MigrationComponent {
   }
 
   import(file) {
-    if (file && file[0] && file[0].path) {
-      if (1 == 1) {
-        console.log(file[0]);
-        let jsonFile = this._electronService.ipcRenderer.sendSync('importDatabase', file[0].name);
-        if (jsonFile) {
-          this.db.remove().then(
-            () => {
-              console.log(jsonFile);
-              this.db.importDump(jsonFile).then(() => {
-                console.log("Import done!")
-              });
-            }
-          )
+    if (file && file[0]) {
+      // let jsonFile = this._electronService.ipcRenderer.sendSync('importDatabase', file[0].name);
+      let jsonFile = this.readTextFile("file://" + file[0].path);
+      if (jsonFile) {
+        // this.db.remove().then(
+        //   () => {
+        //     console.log("Import start!")
+        //     this.db.importDump(jsonFile).then(() => {
+        //       console.log("Import done!")
+        //     });
+        //   }
+        // )
+      }
+    } else {
+      this.alert.showAlert('Please insert just json file', AlertType.Warrning);
+    }
+  }
+
+  readTextFile(file): string {
+    var rawFile = new XMLHttpRequest();
+    let retText = null;
+    console.log(file);
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function () {
+      if (rawFile.readyState === 4) {
+        if (rawFile.status === 200 || rawFile.status == 0) {
+          retText = rawFile.responseText;
+          console.log(retText);
         }
-      } else {
-        this.alert.showAlert('Please insert just json file', AlertType.Warrning);
       }
     }
+    rawFile.send(null);
+    return retText;
   }
 }

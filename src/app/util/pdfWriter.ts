@@ -64,9 +64,9 @@ export class PdfWriter {
         doc.setFontSize(12);
 
         if(members){
-            let address;
+            let address = '';
             members.forEach( (member)=> {
-                if(member.address != ''){
+                if(member.address && member.address != ''){
                     address = member.address;
                     return;
                 }
@@ -160,9 +160,10 @@ export class PdfWriter {
 
     static writeTotalAmount(doc: jsPDF, totalAmount: number, lineY: number) {
         doc.setLineWidth(0.5)
-        doc.line(5, lineY - 5, 205, lineY - 5);
+        lineY += 5;
+        doc.line(5, lineY, 205, lineY);
         doc.setFontSize(14);
-        doc.text('Total Amount: ' + totalAmount + ' $', 130, lineY + 4)
+        doc.text('Total Amount: ' + totalAmount + ' $', 130, lineY + 6)
     }
 
 }

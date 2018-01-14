@@ -23,12 +23,15 @@ export class AuthenticationService {
         this.db = await this.databaseService.get();
     }
 
-    login(username: string, password: string) {
-        this.db.user.findOne({ username: { $eq: username }, password: { $eq: Md5.hashStr(password) } }).exec().then(
+    async login(username: string, password: string): Promise<any> {
+        return this.db.user.findOne({ username: { $eq: username }, password: { $eq: Md5.hashStr(password) } }).exec().then(
             (result: User) => {
                 if (result) {
                     this.setCurrentUser(result);
                     this.router.navigate(['/pages/dashboard']);
+                    return true;
+                } else {
+                   return false;
                 }
             }
         )

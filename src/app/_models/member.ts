@@ -7,7 +7,7 @@ declare interface IMember {
     dateOfBirthday?: string;
     address?: string;
     email?: string;
-    phone?: string;
+    phoneNumber?: string;
     id?: number;
     relativeId?: number[];
 }
@@ -19,7 +19,7 @@ declare class Member extends RxDocument implements IMember {
     dateOfBirthday?: string;
     address?: string;
     email?: string;
-    phone?: string;
+    phoneNumber?: string;
     id?: number;
     relativeId?: number[];
 }

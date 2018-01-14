@@ -1,4 +1,4 @@
-import { Donation, IMember } from '../_models/'
+import { Donation, IMember, Member } from '../_models/'
 
 export class MemberView implements IMember  {
     firstName?: string;
@@ -7,23 +7,24 @@ export class MemberView implements IMember  {
     dateOfBirthday?: string;
     address?: string;
     email?: string;
-    phone?: string;
+    phoneNumber?: string;
     _id?: string;
     relativeId?: number[];
     donations: Donation | Donation[];
 
-    fromJson(member:any){
-        this.firstName = member.firstName;
-        this.lastName = member.lastName;
-        this.middleName = member.middleName;
-        this.dateOfBirthday = member.dateOfBirthday;
-        this.address = member.address;
-        this.email = member.email;
-        this.phone = member.phone;
-        this._id = member._id;
-        this.relativeId = member.relativeId;
+    static fromJson(member:Member | any) : MemberView {
+        let memberView = new MemberView();
+        memberView.firstName = member.firstName;
+        memberView.lastName = member.lastName;
+        memberView.middleName = member.middleName;
+        memberView.dateOfBirthday = member.dateOfBirthday;
+        memberView.address = member.address;
+        memberView.email = member.email;
+        memberView.phoneNumber = member.phoneNumber;
+        memberView._id = member._id;
+        memberView.relativeId = member.relativeId;
 
-        return this;
+        return memberView;
     }
 
     getFullName() {

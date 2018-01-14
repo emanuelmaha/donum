@@ -11,17 +11,7 @@ export class MapDatabase {
             },
             {
                 name: 'member',
-                schema: require('../schemas/member.schema.json'),
-                migrationStrategies: {
-                    // 1 means, this transforms data from version 0 to version 1
-                    1: function(oldDoc){
-                      return oldDoc;
-                    },
-                    2: function(oldDoc){
-                        return oldDoc;
-                    }
-                    
-                }
+                schema: require('../schemas/member.schema.json')
             },
             {
                 name: 'note',

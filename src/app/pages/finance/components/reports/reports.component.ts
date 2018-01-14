@@ -15,17 +15,18 @@ import { DateUtil, PdfWriter } from '../../../../util/';
   styleUrls: ['./reports.scss']
 
 })
-export class ReportsComponent implements OnDestroy {
+export class ReportsComponent {
 
   dataService: CompleterData;
   loading: boolean;
-  members: any = [];
+  membersJson: any = [];
+  members: Member[];
   membersView: MemberView[] = [];
   db: RxDonumDatabase;
   donations: Donation[] = [];
   sub: any;
-  dateStartMemb: Date = new Date("01/01/"+ new Date().getFullYear());
-  dateEndMemb: Date = new Date("12/31/"+ new Date().getFullYear());
+  dateStartMemb: Date = new Date("01/01/" + (new Date().getFullYear() - 1));
+  dateEndMemb: Date = new Date("12/31/" + (new Date().getFullYear() - 1) );
   textNoResult = 'no member found';
 
   constructor(
@@ -33,31 +34,25 @@ export class ReportsComponent implements OnDestroy {
     private databaseService: DatabaseService,
     private completerService: CompleterService
   ) {
-    this.dataService = completerService.local(this.members, 'firstName,lastName', 'firstName,lastName');
+    this.dataService = completerService.local(this.membersJson, 'firstName,lastName', 'firstName,lastName');
     this.getDb();
   }
 
   private async getDb() {
     this.db = await this.databaseService.get();
-    let members = this.db.member.find().$
-    members.subscribe(
-      (resp) => {
-        if (Array.isArray(resp)) {
-          let membersJson = []
-          resp.forEach((m) => {
-            this.members.push(m.toJSON())
-          })
-          this.zone.run(() => { });
-        }
+    let members = this.db.member.find().exec().then(
+      (members: Member[]) => {
+        members.forEach((m) => {
+          this.membersJson.push(m.toJSON())
+        })
+        this.members = members;
       }
-    );
+    )
   }
 
   selectMember(selected: any) {
     if (selected && selected.originalObject && this.membersView.filter(m => m._id == selected.originalObject._id).length == 0) {
-      this.loading = true;
-      let member = new MemberView()
-      member.fromJson(selected.originalObject);
+      let member = MemberView.fromJson(selected.originalObject);
       this.getDonations(member);
       this.membersView.push(member);
     }
@@ -84,6 +79,8 @@ export class ReportsComponent implements OnDestroy {
           }
           if (type == 'all') {
             this.buildReportAll();
+          } if ( type == 'allinone'){
+            this.buildReportAllInOne()
           } else {
             this.buildReportMember();
           }
@@ -97,6 +94,30 @@ export class ReportsComponent implements OnDestroy {
     this.loading = false;
   }
 
+  private async buildReportAllInOne(): Promise<any> {
+    let today = DateUtil.getUSDateFormat();
+    var doc = new jsPDF();
+
+    for(let index in this.members){
+      let memberView = MemberView.fromJson(this.members[index]);
+      await this.db.donation.find({
+        createdDate: {
+          $gte: this.dateStartMemb.getTime(),
+          $lte: this.dateEndMemb.getTime()
+        },
+        memberId: {
+          $eq: memberView._id
+        }
+      }).exec().then((donation) => {
+        memberView.donations = donation;
+      });
+      PdfWriter.buildReportMembers(doc, this.dateStartMemb, this.dateEndMemb, [memberView]);
+      doc.addPage();
+    }
+
+    doc.save('DonationReport_AllInOne_' + today + '.pdf');
+  }
+
   private buildReportMember(): void {
     let today = DateUtil.getUSDateFormat();
     var doc = new jsPDF();
@@ -106,7 +127,7 @@ export class ReportsComponent implements OnDestroy {
     });
     PdfWriter.buildReportMembers(doc, this.dateStartMemb, this.dateEndMemb, this.membersView);
 
-    doc.save('DonationReport_' + membersName.slice(0, -1) + '_' + today + '.pdf');
+    doc.save('DonationReport_' + membersName + today + '.pdf');
   }
 
   private buildReportAll(): void {
@@ -122,15 +143,11 @@ export class ReportsComponent implements OnDestroy {
         $gte: this.dateStartMemb.getTime(),
         $lte: this.dateEndMemb.getTime()
       },
-      memberName: {
-        $eq: member.firstName + ' ' + member.lastName
+      memberId: {
+        $eq: member._id
       }
     }).exec().then((donation) => {
       member.donations = donation;
-      this.loading = false;
     });
-  }
-  ngOnDestroy() {
-    // this.sub.unsubscribe();
   }
 }
